@@ -1,0 +1,82 @@
+/* stylelint-disable no-descending-specificity */
+
+@use 'variables';
+
+@mixin decorated-li(
+  $padding-left,
+  $bullet-char,
+  $bullet-size,
+  $bullet-color,
+  $bullet-top: 0
+) {
+  position: relative;
+  padding-left: $padding-left;
+
+  &::before {
+    position: absolute;
+    top: $bullet-top;
+    left: 0;
+    font: variables.$latin-font, sans-serif;
+    font-size: $bullet-size;
+    color: $bullet-color;
+    content: $bullet-char;
+  }
+}
+
+ul.twinkle {
+  padding-top: 0;
+  padding-left: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin-top: 0.5rem;
+    }
+  }
+
+  > li {
+    @include decorated-li(
+      $padding-left: 1.6rem,
+      $bullet-char: '\2726',  // star
+      $bullet-size: 1.3rem,
+      $bullet-color: variables.$dark-gold,
+      $bullet-top: -0.15rem
+    );
+  }
+
+  > li > ul {
+    padding-left: 1em;
+    list-style: none;
+
+    > li {
+      @include decorated-li(
+        $padding-left: 1.5rem,
+        $bullet-char: '\2666',  // diamond
+        $bullet-size: 0.9rem,
+        $bullet-color: variables.$pink,
+        $bullet-top: 0.25rem
+      );
+    }
+  }
+
+  > li > ul > li > ul {
+    padding-left: 1em;
+    list-style: none;
+
+    > li {
+      @include decorated-li(
+        $padding-left: 1.5rem,
+        $bullet-char: '\2665', // heart
+        $bullet-size: 0.8rem,
+        $bullet-color: variables.$gray,
+        $bullet-top: 0.2rem
+      );
+    }
+  }
+}

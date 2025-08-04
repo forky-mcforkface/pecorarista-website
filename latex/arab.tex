@@ -1,0 +1,43 @@
+\documentclass{beamer}
+\usetheme{default}
+\usepackage{fontspec}
+\setsansfont{OpenSans}
+\setmonofont{Source Code Pro}
+\usepackage{arabluatex}
+\setmainfont[Ligatures=TeX]{Free Serif}
+\newfontfamily\arabicfont[%
+    Script=Arabic,     % enable ligatures
+    RawFeature={%
+        +anum,         % use eastern arabic numerals
+        +ss05}         % put kasrah below shadda
+]{Amiri}
+\newfontfamily\translitfont[Ligatures=TeX]{Free Serif}
+\SetTranslitFont{\translitfont}
+\SetTranslitStyle{\itshape}  % \upshape, \itshape
+\SetTranslitConvention{arabica}  % dmg, loc, arabica
+\setbeamertemplate{navigation symbols}{}
+\begin{document}
+\begin{frame}[fragile]
+    Input:
+    \vspace{-1ex}
+    \begin{verbatim}kAnat rI.hu 'l-^samAli tatajAdalu
+wa 'l-^samsa fI 'ayyiN minhumA kAnat
+'aqw_A mina 'l-'uxr_A.\end{verbatim}
+
+    Output (Arabic):
+    \smallskip
+    \begin{arab}[fullvoc]
+        kAnat rI.hu 'l-^samAli tatajAdalu
+        wa 'l-^samsa fI 'ayyiN minhumA kAnat 'aqw_A mina 'l-'uxr_A.
+    \end{arab}
+
+    \bigskip
+
+    Output (Transcription):
+    \smallskip
+    \begin{arab}[trans]
+        kAnat rI.hu 'l-^samAli tatajAdalu
+        wa 'l-^samsa fI 'ayyiN minhumA kAnat 'aqw_A mina 'l-'uxr_A.
+    \end{arab}
+\end{frame}
+\end{document}

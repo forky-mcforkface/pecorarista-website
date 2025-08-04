@@ -1,0 +1,380 @@
+{
+  "alphabets": [
+    {
+      "symbol": "ɐ",
+      "name": "Turned A",
+      "vim": [],
+      "tipa": "\\textturna<br/>5",
+      "compose": ["a", "a"],
+      "xsampa": ["6"]
+    },
+    {
+      "symbol": "ɑ",
+      "name": "Script A",
+      "vim": [],
+      "tipa": "A",
+      "compose": [],
+      "xsampa": ["A"]
+    },
+    {
+      "symbol": "æ",
+      "name": "Ash",
+      "vim": ["a", "e"],
+      "tipa": "\\ae",
+      "compose": ["a", "e"],
+      "xsampa": ["{"]
+    },
+    {
+      "symbol": "ʌ",
+      "name": "Turned V",
+      "vim": [],
+      "tipa": "\\textturnv<br/>2",
+      "compose": ["v", "v"],
+      "xsampa": ["V"]
+    },
+    {
+      "symbol": "ɓ",
+      "name": "Hooktop B",
+      "vim": [],
+      "tipa": "\\texthtb",
+      "compose": ["b", "'"],
+      "xsampa": ["b", "_", "&lt;"]
+    },
+    {
+      "symbol": "ʙ",
+      "name": "Small capital B",
+      "vim": [],
+      "tipa": "\\textscb",
+      "compose": ["b", "`"],
+      "xsampa": ["B", "\\"]
+    },
+    {
+      "symbol": "β",
+      "name": "Greek beta",
+      "vim": ["*", "b"],
+      "tipa": "\\textbetaB",
+      "compose": ["*", "b"],
+      "xsampa": ["B"]
+    },
+    {
+      "symbol": "ç",
+      "name": "C cedilla",
+      "vim": ["c", ","],
+      "tipa": "\\c{c}",
+      "compose": ["c", ","],
+      "xsampa": ["C"]
+    },
+    {
+      "symbol": "ɕ",
+      "name": "Curly-tail C",
+      "vim": [],
+      "tipa": "C",
+      "compose": [],
+      "xsampa": ["s", "\\"]
+    },
+    {
+      "symbol": "ɗ",
+      "name": "Hooktop D",
+      "vim": [],
+      "tipa": "\\texthtd",
+      "compose": ["d", "'"],
+      "xsampa": ["d", "_", "&lt;"]
+    },
+    {
+      "symbol": "ɖ",
+      "name": "Right-tail D",
+      "vim": [],
+      "tipa": "\\textrtaild",
+      "compose": ["d", ","],
+      "xsampa": ["d", "`"]
+    },
+    {
+      "symbol": "ð",
+      "name": "Eth",
+      "vim": [],
+      "tipa": "\\dhD",
+      "compose": ["d", "h"],
+      "xsampa": ["D"]
+    },
+    {
+      "symbol": "ə",
+      "name": "Schwa",
+      "vim": [],
+      "tipa": "@",
+      "compose": ["e", "e"],
+      "xsampa": ["@"]
+    },
+    {
+      "symbol": "ɛ",
+      "name": "Latin epsilon",
+      "vim": [],
+      "tipa": "\\textepsilonE",
+      "compose": ["e", "h"],
+      "xsampa": ["E"]
+    },
+    {
+      "symbol": "ɡ",
+      "name": "Script G",
+      "vim": [],
+      "tipa": "g",
+      "compose": ["g", "g"],
+      "xsampa": ["g"]
+    },
+    {
+      "symbol": "ɢ",
+      "name": "Small capital G",
+      "vim": [],
+      "tipa": "\\textscg",
+      "compose": ["g", "`"],
+      "xsampa": ["G", "\\"]
+    },
+    {
+      "symbol": "ɣ",
+      "name": "Latin gamma",
+      "vim": [],
+      "tipa": "G",
+      "compose": ["g", "h"],
+      "xsampa": ["G"]
+    },
+    {
+      "symbol": "ɤ",
+      "name": "Ram’s horns",
+      "vim": [],
+      "tipa": "\\textramshorns<br/>7",
+      "compose": ["o", "g", "h"],
+      "xsampa": ["7"]
+    },
+    {
+      "symbol": "ɦ",
+      "name": "Hooktop H",
+      "vim": [],
+      "tipa": "\\texthth",
+      "compose": ["h", "'"],
+      "xsampa": ["h", "\\"]
+    },
+    {
+      "symbol": "ħ",
+      "name": "Crossed H",
+      "vim": ["/", "h"],
+      "tipa": "\\textcrh",
+      "compose": ["/", "h"],
+      "xsampa": ["X", "\\"]
+    },
+    {
+      "symbol": "ɥ",
+      "name": "Turned H",
+      "vim": ["n", "g"],
+      "tipa": "\\textturnh",
+      "compose": ["h","h"],
+      "xsampa": [""]
+    },
+    {
+      "symbol": "ɨ",
+      "name": "Barred I",
+      "vim": [],
+      "tipa": "\\textbari",
+      "compose": ["/", "i"],
+      "xsampa": []
+    },
+    {
+      "symbol": "ŋ",
+      "name": "Eng",
+      "vim": [],
+      "tipa": "\\ng",
+      "compose": ["n", "g"],
+      "xsampa": ["N"]
+    },
+    {
+      "symbol": "ɳ",
+      "name": "Right-tail N",
+      "vim": [],
+      "tipa": "\\textrtailn",
+      "compose": ["ɳ"],
+      "xsampa": ["n", "`"]
+    },
+    {
+      "symbol": "ɴ",
+      "name": "Small capital N",
+      "vim": [],
+      "tipa": "\\textscn",
+      "compose": ["n", "`"],
+      "xsampa": ["N", "\\"]
+    },
+    {
+      "symbol": "ɪ",
+      "name": "Small capital I",
+      "vim": [],
+      "tipa": "I",
+      "compose": ["i", "`"],
+      "xsampa": ["I"]
+    },
+    {
+      "symbol": "ɔ",
+      "name": "Open O",
+      "vim": [],
+      "tipa": "O",
+      "compose": ["o", ")"],
+      "xsampa": ["O"]
+    },
+    {
+      "symbol": "ø",
+      "name": "Slashed O",
+      "vim": ["o", "/"],
+      "tipa": "\\o",
+      "compose": ["o", "/"],
+      "xsampa": ["2"]
+    },
+    {
+      "symbol": "œ",
+      "name": "O-E ligature",
+      "vim": ["o", "e"],
+      "tipa": "\\oe",
+      "compose": ["o", "e"],
+      "xsampa": ["9"]
+    },
+    {
+      "symbol": "ɸ",
+      "name": "Latin phi",
+      "vim": [],
+      "tipa": "\\textphiF",
+      "compose": ["*", "u"],
+      "xsampa": ["p", "\\"]
+    },
+    {
+      "symbol": "ɹ",
+      "name": "Turned R",
+      "vim": [],
+      "tipa": "\\textturnr",
+      "compose": ["r", "r"],
+      "xsampa": ["r", "\\"]
+    },
+    {
+      "symbol": "ɾ",
+      "name": "Fishhook R",
+      "vim": [],
+      "tipa": "\\textfishhookr",
+      "compose": ["u", "h"],
+      "xsampa": ["4"]
+    },
+    {
+      "symbol": "ʀ",
+      "name": "Small capital R",
+      "vim": [],
+      "tipa": "\\textscr",
+      "compose": ["r", "`"],
+      "xsampa": ["R", "\\"]
+    },
+    {
+      "symbol": "ʁ",
+      "name": "Inverted small capital R",
+      "vim": [],
+      "tipa": "\\textinvscr",
+      "compose": [],
+      "xsampa": ["R"]
+    },
+    {
+      "symbol": "θ",
+      "name": "Greek theta",
+      "vim": ["*", "h"],
+      "tipa": "\\texttheta<br/>T",
+      "compose": ["*", "u"],
+      "xsampa": ["T"]
+    },
+    {
+      "symbol": "ʃ",
+      "name": "Esh",
+      "vim": [],
+      "tipa": "\\textesh<br/>S",
+      "compose": ["s", "h"],
+      "xsampa": ["S"]
+    },
+    {
+      "symbol": "ʊ",
+      "name": "Latin upsilon",
+      "vim": [],
+      "tipa": "\\textupsilon<br/>U",
+      "compose": ["u", "h"],
+      "xsampa": ["U"]
+    },
+    {
+      "symbol": "χ",
+      "name": "Greek chi",
+      "vim": ["*", "x"],
+      "tipa": "\\textchi<br/>X",
+      "compose": ["*", "x"],
+      "xsampa": ["X"]
+    },
+    {
+      "symbol": "ʒ",
+      "name": "Latin ezh",
+      "vim": [],
+      "tipa": "\\textyogh<br/>Z",
+      "compose": ["z", "h"],
+      "xsampa": ["Z"]
+    },
+    {
+      "symbol": "ʔ",
+      "name": "Glottal stop",
+      "vim": [],
+      "tipa": "\\textglotstop<br/>P",
+      "compose": ["?", "."],
+      "xsampa": ["?"]
+    },
+    {
+      "symbol": "ʕ",
+      "name": "Reversed glottal stop",
+      "vim": [],
+      "tipa": "\\textrevglotstop<br/>Q",
+      "compose": ["?", "("],
+      "xsampa": ["?", "\\"]
+    },
+    {
+      "symbol": "ˠ",
+      "name": "Superscript gamma",
+      "vim": [],
+      "tipa": "\\textsuperscript{\\textgamma}",
+      "compose": [],
+      "xsampa": ["_", "G"]
+    },
+    {
+      "symbol": "ʲ",
+      "name": "Superscript J",
+      "vim": [],
+      "tipa": "\\textsuperscript{j}",
+      "compose": [],
+      "xsampa": ["_", "j"]
+    },
+    {
+      "symbol": "ⁿ",
+      "name": "Superscript N",
+      "vim": [],
+      "tipa": "\\textsuperscript{n}",
+      "compose": ["ⁿ"],
+      "xsampa": ["_", "n"]
+    },
+    {
+      "symbol": "ʷ",
+      "name": "Superscript W",
+      "vim": [],
+      "tipa": "\\textsuperscript{w}",
+      "compose": ["^", "^", "w"],
+      "xsampa": ["_", "w"]
+    },
+    {
+      "symbol": "○̃",
+      "name": "Tilde",
+      "vim": [],
+      "tipa": "\\~",
+      "compose": ["\\", "~"],
+      "xsampa": ["~"]
+    },
+    {
+      "symbol": "ː",
+      "name": "Length mark",
+      "vim": [],
+      "tipa": "\\textlengthmark<br/>:",
+      "compose": [":", "+"],
+      "xsampa": [":"]
+    }
+  ]
+}

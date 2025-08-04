@@ -1,0 +1,104 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set posted = '2015-08-24' %}
+{% set title = 'LaTeXで擬似コード' %}
+{% set updated = '2019-03-21' %}
+
+{% block post %}
+<p>アルゴリズムやプログラミングに関する文書を書いているとき、擬似コードを書くことがあると思います。この記事ではLaTeXで擬似コードを書く方法と見た目を変更する方法をいくつか説明したいと思います。環境としてはLuaTeXを想定していますが、それ以外の場合でも若干の変更で動くと思います。</p>
+<section id="usage">
+  <h2>1. 主な使い方</h2>
+  <p>まずは
+    <span class="filename">algpseudocode</span> というパッケージを読み込みます。
+    以下のように挿入ソートのアルゴリズムを書いてみます。</p>
+    <div class="code-container">
+      <div class="code-header">
+        <span class="filename">insertion-sort.tex</span>
+      </div>
+      {% includeSourceCode 'latex/insertion-sort.tex', 'latex' %}
+    </div>
+  <p>表示されるのは以下のような擬似コードになります。</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <img
+        src="/static/images/insertion-sort.svg"
+        alt="疑似コードの例"
+        style="max-width: 600px;"
+      >
+    </figure>
+  </div>
+  <p>普段Pythonなど
+    <code>end</code> を明示しない言語に慣れていると少し冗長に感じるかもしれません。そのような記号を明示したくない場合はパッケージ読込時に</p>
+  <div class="code-container no-header">
+    {% highlight '\\usepackage[noend]{algpseudocode}', 'latex' %}
+  </div>
+  <p>のように書いておくと</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <img
+        src="/static/images/insertion-sort-no-end.svg"
+        alt="`End`を用いない疑似コードの例"
+        style="max-width: 600px;"
+      >
+    </figure>
+  </div>
+  <p> のようなPython風の擬似コードになります。さらに<code>do</code>の記述も不要ならば、ヘッダ部分に以下のように記述します。</p>
+  <div class="code-container no-header">
+    {% highlight '\\algrenewcommand\\algorithmicdo{}', 'latex' %}
+  </div>
+  <p>いま
+  <code>for</code> の始点と終点の間には<code>…</code> を使っていますが、もし変えたければ<code>algpseudocode.sty</code> にならい新しい制御構造<code>\ForTo</code> をプリアンブルで定義します。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">insertion-sort-for-to.tex</span>
+    </div>
+    {% includeSourceCode 'latex/insertion-sort-for-to.tex', 'latex' %}
+  </div>
+  <p>アルゴリズム中
+    <code>\For</code> を新しく定義した
+    <code>\ForTo</code> に置き換えて次のような出力を得ます。</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <img
+        src="/static/images/insertion-sort-for-to.svg"
+        alt="ForToの表示を変更した疑似コードの例"
+        style="max-width: 600px;"
+      >
+    </figure>
+  </div>
+  <p>新しく定義した制御構造については
+    <code>[noend]</code> オプションが適用されないのため、要らなければ
+    <code>algtext*{EndFor}</code> を
+    <code>\ForTo</code> の定義の次の行にでも書いておきましょう。</p>
+</section>
+<section>
+  <h3>2. よく変更を加える項目について</h3>
+  <p>行間は<code>\setlength{\baselineskip}{Npt}</code>（<code>N</code> は自然数 ）で変更できます。ここでは新たに<code>broadalgo</code> という環境を定義することにします。</p>
+  <div class="code-container no-header">
+    {% includeSourceCode 'latex/broadalgo.tex', 'latex' %}
+  </div>
+  <p>この例では出てきませんが<code>\Return</code> には行番号が振られないようになっています。あったほうがよいならば再定義する必要があります。</p>
+  <div class="code-container no-header">
+    {% includeSourceCode 'latex/return.tex', 'latex' %}
+  </div>
+  <p>上記の設定を使った文書の例です。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>
+        <span class="filename">final.pdf</span>
+      </figcaption>
+      <img
+        src="/static/images/final.svg"
+        alt="上記で説明した変更を適用した疑似コードの例"
+        style="max-width: 600px;"
+      >
+    </figure>
+  </div>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">final.tex</span>
+    </div>
+    {% includeSourceCode 'latex/final.tex', 'latex' %}
+  </div>
+</section>
+{% endblock %}

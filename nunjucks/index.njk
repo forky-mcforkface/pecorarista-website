@@ -1,0 +1,111 @@
+{% extends 'nunjucks/_layout/_layout.njk' %}
+{% set title = 'profile' %}
+{% set lang = 'en' %}
+
+{% block content %}
+<article>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <section>
+      <div class="figure-container">
+        <figure>
+          <img src="/static/images/avatar.png" alt="Avatar" style="max-width: 250px">
+        </figure>
+          <ul class="profile">
+            <li>
+              <a href="mailto:pecorarista@gmail.com">
+                <i aria-hidden="true" class="fa-regular fa-envelope fa-2x" title="E-mail"></i>
+                <span class="sr-only">E-mail</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/pecorarista">
+                <i aria-hidden="true" class="fa-brands fa-x-twitter fa-2x" title="Twitter"></i>
+                <span class="sr-only">Twitter</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/pecorarista">
+                <i aria-hidden="true" class="fa-brands fa-bluesky fa-2x" title="Bluesky"></i>
+                <span class="sr-only">Bluesky</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/pecorarista">
+                <i aria-hidden="true" class="fa-brands fa-github fa-2x" title="GitHub"></i>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-lg-8">
+      <section id="Description">
+        <h2>Miyazawa, Akira</h2>
+        <p>I am a data scientist working at an advertising company. I am interested in how humans create metaphorical expressions and how to model such processes in computational frameworks.</p>
+      </section>
+      <section id="Interests">
+        <h3>Interests</h3>
+        <ul>
+          <li>Natural Language Processing (Text Generation)</li>
+          <li>Cognitive Linguistics (Metaphor)</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <section id="Experience">
+        <h3>Experience</h3>
+        <ul>
+          <li>Data Analyst (2019&ndash;present)<br><a href="https://www.hakuhodody-one.co.jp/en/">Hakuhodo DY ONE</a> (formerly D.A.Consortium Inc.)</li>
+          <li>Technical Staff (2016&ndash;2019)<br><a href="https://www.airc.aist.go.jp/en/">Artificial Intelligence Research Center (AIRC)</a> of <a href="https://www.aist.go.jp/index_en.html">National Institute of Advanced Industrial Science and Technology (AIST)</a></li>
+          <li>Research Assistant (2015&ndash;2016)<br><a href="https://www.nii.ac.jp/">National Institute of Informatics (NII)</a></li>
+          <li>Software Developer (2012&ndash;2014)<br><a href="https://www.jyohokikaku.co.jp/">Information Planning Co., Ltd.</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <section id="Education">
+        <h3>Education</h3>
+        <ul>
+          <li>PhD Student (2014&ndash;2021)<br>Department of Informatics, School of Multidisciplinary Sciences, <a href="https://www.soken.ac.jp/en/">The Graduate University for Advanced Studies</a></li>
+          <li>Bachelor of Arts in Economics (2012)<br><a href="https://www.waseda.jp/fpse/en/">Department of Economics, School of Political Science and Economics</a>, <a href="https://www.waseda.jp/top/">Waseda University</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <section id="Publications">
+        <h3>Publications</h3>
+        <h4>Journal Article</h4>
+        <ul>
+          <li>
+            <em><a href="https://www.jstage.jst.go.jp/article/jnlp/26/2/26_277/_article/-char/en">Automatically Computable Metrics to Generate Metaphorical Verb Expressions</a></em><br><span class="me">Akira Miyazawa</span> and Yusuke Miyao. 2019.<br>Journal of Natural Language Processing 26, pp. 277&ndash;300.<br><a href="https://www.jstage.jst.go.jp/article/jnlp/26/2/26_277/_pdf/-char/en">[PDF]</a> <a href="https://www.jstage.jst.go.jp/AF06S010ShoshJkuDld?sryCd=jnlp&noVol=26&noIssue=2&kijiCd=26_277&kijiLangKrke=en&kijiToolIdHkwtsh=AT0073&request_locale=EN">[BibTeX]</a>
+          </li>
+        </ul>
+        <h4>Conference Proceedings</h4>
+        <ul>
+          <li><em>Controlling Contents in Data-to-Document Generation with Human-Designed Topic Labels</em><br>Aoki, K., <span class="me">Miyazawa, A.</span>, Ishigaki, T., Aoki, T., Noji, H., Goshima, K., Kobayashi, I., Takamura, H., and Miyao, Y. 2017.<br>In Proceedings of <a href="https://www.inlg2019.com/">the 12th International Conference on Natural Language Generation (INLG)</a>.<br>[PDF] [BibTeX] [Code]</li>
+          <li><em><a href="https://aclanthology.info/papers/W18-6515/w18-6515">Generating Market Comments Referring to External Resources</a></em><br>Aoki, T., <span class="me">Miyazawa, A.</span>, Ishigaki, T., Goshima, K., Aoki, K., Kobayashi, I., Takamura, H., and Miyao, Y. 2018.<br>In Proceedings of <a href="https://inlg2018.uvt.nl/">the 11th International Conference on Natural Language Generation (INLG)</a>, pp. 135&ndash;139.<br><a href="http://aclweb.org/anthology/W18-6515">[PDF]</a> <a href="https://aclanthology.info/papers/W18-6515/w18-6515.bib">[BibTeX]</a> <a href="https://github.com/aistairc/market-reporter">[Code]</a></li>
+          <li><em><a href="https://aclanthology.info/papers/W17-6929/w17-6929">Evaluation Metrics for Automatically Generated Metaphorical Expressions</a></em><br><span class="me">Akira Miyazawa</span> and Yusuke Miyao. 2018.<br>In Proceedings of <a href="https://www.lirmm.fr/iwcs2017/">the 12th International Conference on Computational Semantics (IWCS)</a>.<br><a href="http://aclweb.org/anthology/W17-6929">[PDF]</a> <a href="https://github.com/pecorarista/documents/blob/master/IWCS/poster.pdf">[Poster]</a> <a href="https://aclanthology.info/papers/W17-6929/w17-6929.bib">[BibTeX]</a> <a href="https://github.com/pecorarista/metaphor-evaluation-result">[Code]</a></li>
+          <li><em><a href="https://aclanthology.info/papers/P17-1126/p17-1126">Learning to Generate Market Comments from Stock Prices</a></em><br>Murakami, S., Watanabe, A., <span class="me">Miyazawa, A.</span>, Goshima, K., Yanase, T., Takamura, H., and Miyao, Y. 2017.<br>In Proceedings of <a href="http://acl2017.org/">the 55th Annual Meeting of the Association for Computational Linguistics (ACL)</a>, pp. 1374&ndash;1384.<br><a href="http://aclweb.org/anthology/P17-1126">[PDF]</a> <a href="https://aclanthology.info/papers/P17-1126/p17-1126.bib">[BibTeX]</a> <a href="https://github.com/aistairc/market-reporter">[Code]</a></li>
+        </ul>
+        <h4>Non-refereed Domestic Conferences</h4>
+        <ul>
+        <li lang="ja">『動詞を用いたメタファー表現の自動生成』<br><span class="me">宮澤 彬</span>・宮尾 祐介<br><a href="https://sites.google.com/site/metaphorstudy/home/03archives/2018_winter">日本語用論学会 メタファー研究会(2018-12-14&ndash;2018-12-16)</a><br>[PDF]
+            <a href="https://github.com/pecorarista/documents/blob/master/Pragmatics/slide.pdf">[Slide]</a>
+          </li>
+          <li lang="ja"><a href="https://ipsj.ixsq.nii.ac.jp/ej/?action=pages_view_main&amp;active_action=repository_view_main_item_detail&amp;item_id=178831&amp;item_no=1&amp;page_id=13&amp;block_id=8"><span class="head-cjk-paren">『</span>メタファーの自動生成に向けた客観的評価指標の検討』</a><br><span class="me">宮澤 彬</span>・宮尾 祐介<br><a href="https://nl-ipsj.or.jp/2017/04/26/nl231_program/">第231回自然言語処理研究会・第116回音声言語情報処理研究会(2017-05-15&ndash;2017-05-16)</a><br><a href="https://ipsj.ixsq.nii.ac.jp/ej/?action=repository_action_common_download&item_id=178831&item_no=1&attribute_id=1&file_no=1">[PDF]</a> <a href="https://ipsj.ixsq.nii.ac.jp/ej/?action=repository_bibtex&itemId=178831&itemNo=1">[BibTEX]</a> <a href="https://github.com/pecorarista/documents/blob/master/IPSJNL/ipsjnl.pdf">[Slide]</a>
+          </li>
+          <li lang="ja">『日本語メタファーコーパス作成のためのガイドライン』<br><span class="me">宮澤 彬</span>・吉田 奈央・宮尾 祐介<br><a href="http://www.anlp.jp/nlp2016/">言語処理学会第22回年次大会(NLP 2016)</a><br><a href="http://www.anlp.jp/proceedings/annual_meeting/2016/pdf_dir/P6-4.pdf">[PDF]</a> <span>[BibTeX]</span> <a href="https://github.com/pecorarista/metaphor-evaluation-result">[Code]</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</article>
+{% endblock %}

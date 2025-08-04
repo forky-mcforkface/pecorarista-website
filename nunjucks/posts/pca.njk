@@ -1,0 +1,210 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = '主成分分析(Principal Component Analysis, PCA)' %}
+{% set posted = '2023-11-21' %}
+{% set updated = '2023-11-22' %}
+
+{% block post %}
+<section>
+<p>実験により
+\(p\)
+次元の観測値
+\(v^{(1)},\,\ldots,\,v^{(n)}\)
+を得たとする．ここで
+\(n\)
+と
+\(p\)
+はともに正整数であり，各成分は実数とする．各ベクトル\(v^{(1)},\, \ldots,\, v^{(n)}\)を1次元空間上に（線形変換で）写し，それらの違い（分散）ができる限り強調されるようにしたい．
+</p>
+<p>\(\mathbb{R}^p\)から\(\mathbb{R}\)への線形変換，すなわち\(\mathbb{R}^p\)の双対空間の元は，ある\(w^\mathsf{T} \in \mathbb{R}^{1 \times p}\)によって\(\varphi(v) = w^\mathsf{T} v\)と表すことができる（<a href="#yukie">雪江[1]</a> &#167;10.1）．
+変換後のベクトルを\(u_1 := w^\mathsf{T} v_1,\,\ldots,\,u_n := w^\mathsf{T} v_n\)として，これらの分散を求める．変換前のベクトル\(v_1,\,\ldots,\,v_n\)の平均は
+\begin{align*}
+    \overline{v} = \frac{1}{n} \sum_{i = 1}^n v^{(i)}
+\end{align*}
+である．変換後のベクトルの平均\(\overline{u}\)は，これを用いて
+\begin{align*}
+    \overline{u} = \frac{1}{n} \sum_{i = 1}^n w^\mathsf{T} v^{(i)} = w^\mathsf{T} \overline{v}
+\end{align*}
+と表せる．変換後のベクトルの標本分散は
+\begin{align*}
+    \frac{1}{n - 1} \sum_{i = 1}^n \lvert u^{(i)} - \overline{u}\rvert
+    &amp;= \frac{1}{n - 1}\sum_{i = 1}^n \lvert w^\mathsf{T} v^{(i)} - w^\mathsf{T} \overline{v} \rvert^2 \\
+    &amp;= \frac{1}{n - 1}\sum_{i = 1}^n \lvert w^\mathsf{T} (v^{(i)} - \overline{v}) \rvert^2 \\
+    &amp;= \frac{1}{n - 1} \sum_{i = 1}^n w^\mathsf{T} (v^{(i)} - \overline{v})(v^{(i)} - \overline{v})^\mathsf{T} w \\
+    &amp;= w^\mathsf{T}
+    \begin{pmatrix}
+      \displaystyle \frac{1}{n - 1}\sum_{i = 1}^n (v^{(i)}_1 - \overline{v}_1)^2
+      &amp; \cdots &amp;
+      \displaystyle \frac{1}{n - 1} \sum_{i = 1}^n (v^{(i)}_p - \overline{v}_p)(v^{(i)}_1 - \overline{v}_1)^\mathsf{T} \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      \displaystyle \frac{1}{n - 1} \sum_{i = 1}^n (v^{(i)}_1 - \overline{v}_1)(v^{(i)}_p - \overline{v}_p)^\mathsf{T}
+      &amp; \cdots &amp;
+      \displaystyle
+      \frac{1}{n - 1} \sum_{i = 1}^n (v^{(i)}_p - \overline{v}_p)^2
+    \end{pmatrix} w
+\end{align*}
+となる．右辺の
+\(p\)
+次正方行列（標本分散共分散行列と呼ばれるものになっている）を
+\(S\)
+と置くと，解くべき問題は
+\(w\)
+に関する
+\(w^\mathsf{T} S w\)
+の最大化ということになる．</p>
+<p>\(w^\mathsf{T} S w\)
+は
+\(w\)
+によっていくらでも大きくなるので\(w\)の大きさを例えば\(1\)に固定し，
+\(w\)の最適な方向を探す問題として扱う．
+すなわち以下の制約付き最大化問題を解くことに帰着される：
+\begin{align}
+  \begin{cases}
+    \text{maximize}\quad w^\mathsf{T} S w \\
+    \text{subject to}\quad \lVert w \rVert = 1.
+  \end{cases}
+  \label{opt}
+\end{align}
+これは<strong>Lagrangeの未定乗数法</strong>（<a href="#miyajima">宮島[2]</a>定理3.15）によって解くことができる．</p>
+<p>Lagrangeの未定乗数法を使うための準備として，まずは
+\(w \mapsto w^\mathsf{T} S w\)
+の<strong>(Fréchet)導関数</strong>(<a href="#miyajima">ibid.</a> &#167;3.2)を求める．
+\(w\)
+が
+\(w + h\)
+に変化したときの変化は
+\begin{align}
+    (w + h)^\mathsf{T} S (w + h) - w^\mathsf{T} S w
+    = w^\mathsf{T} S h + h^\mathsf{T} S w + h^\mathsf{T} S h
+    \label{diff} \\
+\end{align}
+である．この式の右辺第2項は
+\begin{align*}
+    h^\mathsf{T} S w
+    &amp;= \langle h,\, Sw \rangle \\
+    &amp;= \langle Sw,\,h \rangle \\
+    &amp;= (Sw)^\mathsf{T} h \\
+    &amp;= w^\mathsf{T} S^\mathsf{T} h
+\end{align*}
+と計算できる．ここで\(\langle u,\, v \rangle\)は標準内積\(u^\mathsf{T} v\)である．これを用いると式(\ref{diff})の第1項と第2項の和は
+\begin{align*}
+    w^\mathsf{T} S h + h^\mathsf{T} S w = 2 w^\mathsf{T} S w
+\end{align*}
+となる．ここで
+\(S\)
+が対称行列なので
+\(S + S^\mathsf{T} = 2 S\)
+となることを使った．式(\ref{diff})の右辺第3項は<strong>Cauchy&ndash;Schwarzの不等式</strong>（<a href="#miyajima">ibid.</a> &#167;1.1.2）により
+\begin{align}
+    h^\mathsf{T} S h = \langle h,\,Sh \rangle \leq \lVert h\rVert \lVert Sh \rVert.
+    \label{hsh}
+\end{align}
+と計算できる．上の式の計算を進めるために，行列ノルムの1つである<strong>Frobeniusノルム</strong>（<a href="#yamamoto">山本[3]</a> &#167;4.1）というものを用いる．行列
+\(A = (a_{ij}) \in \mathbb{R}^{n \times n}\)
+のFrobeniusノルムは
+\begin{align*}
+{\lVert A \rVert}_\mathrm{F} = \sqrt{\sum_{(i,\,j) \in \{1,\,\ldots,\,n\}^2} {\lvert a_{ij} \rvert}^2}
+\end{align*}
+と定義される．このノルムには任意の\(x\)に対して\(\lVert A x\rVert \leq {\lVert A \rVert} \lVert x \rVert\)が成り立つという性質がある（<a href="#yamamoto">ibid.</a> &#167;4.2）．したがって式(\ref{hsh})は
+\begin{align*}
+h^\mathsf{T} S h \leq \lVert h \rVert {\lVert S \rVert}_\mathrm{F} \lVert h \rVert = {\lVert S \rVert}_\mathrm{F} {\lVert h \rVert}^2
+\end{align*}
+となる．</p>
+<p>最終的に式(\ref{diff})から
+\begin{gather*}
+    (w + h)^\mathsf{T} S (w + h) - w^\mathsf{T} S w - 2 w^\mathsf{T} S h = h^\mathsf{T} S h \\
+    \lvert (w + h)^\mathsf{T} S (w + h) - w^\mathsf{T} S w - 2 w^\mathsf{T} S h \rvert \leq {\lVert S \rVert}_\mathrm{F} {\lVert h \rVert}^2
+\end{gather*}
+がわかり，\(w \mapsto w^\mathsf{T} S w\)の導関数は\(h \mapsto 2w^\mathsf{T} S h\)で与えられることがわかる．</p>
+<p>次に\(w \mapsto w^\mathsf{T} w\)の導関数を求める．\(w\)が\(w + h\)に変化するとき
+\begin{align*}
+    {(w + h)}^\mathsf{T} (w + h) - w^\mathsf{T} w
+    &amp;= w^\mathsf{T} h + h^\mathsf{T} w + h^\mathsf{T} h \\
+    &amp;= 2 w^\mathsf{T} h + {\lVert h \rVert}^2
+\end{align*}
+であるから，
+\begin{align*}
+    \lvert {(w + h)}^\mathsf{T} (w + h) - w^\mathsf{T} w - 2 w^\mathsf{T} h \rvert = {\lVert h \rVert}^2
+\end{align*}
+となり，\(w \mapsto w^\mathsf{T} w\)の導関数が\(h \mapsto 2w^\mathsf{T} h\)で与えられることがわかる．</p>
+<p>最適化問題(\ref{opt})のLagrangianは
+\begin{align*}
+    \mathcal{L}(w,\,\lambda) = w^\mathsf{T} S w - \lambda (w^\mathsf{T} w - 1)
+\end{align*}
+であり，上で求めた結果から
+\begin{align*}
+    D_w \mathcal{L} (w,\,\lambda) = 2 w^\mathsf{T} S - 2 \lambda  w^\mathsf{T}
+\end{align*}
+となる．\(D_w \mathcal{L} = 0\)，すなわち
+\begin{align*}
+    Sw = \lambda w
+\end{align*}
+となることが，
+\(w^\mathsf{T} S w\)
+が極大となるための必要条件である．そしてこの条件は\(w\)が固有ベクトルであることと同値である．
+最大の固有値を\(\lambda_1\)，その固有値に対応する固有ベクトルを\(w_1\)とすると
+\begin{align*}
+    w_1^\mathsf{T} S w_1
+    = w_1^\mathsf{T} (S w_1)
+    = w_1^\mathsf{T} (\lambda_1 w_1)
+    = \lambda_1
+\end{align*}
+となる．</p>
+<p>実際にこれが最大値であることを確認する．<strong>Weierstraßの最大値定理</strong>（<a href="#miyajima">宮島[2]</a> 定理1.9）により，
+\((p - 1)\)
+次元球面
+\(S^{p - 1} = \{w \in \mathbb{R}^p \mid \lVert w \rVert = 1\}\)
+がコンパクト（今は有界かつ閉であることと同値）であることを確認すればよい．
+\(f\colon \mathbb{R}^p \to \mathbb{R}\)を\(f(x) = \lVert x \rVert\)
+とすると
+\(f\)
+は連続写像である．
+1点集合\(\{1\}\)は閉集合であるから，\(f^{-1} (\{1\}) = S^{p - 1}\)は\(\mathbb{R}^p\)における閉集合である（<a href="matsumoto">松本[4]</a>定理5.2）．
+有界であることは明らかである．
+よって
+\((p - 1)\)
+次元球面はコンパクトであり，
+\(w^\mathsf{T} S w\)の最大値が\(\lambda_1\)
+であることが確かめられた．</p>
+<p>行列\((n - 1)S\)は<strong>Gram行列</strong>（<a href="#yamamoto">山本[3]</a> &#167;1.6）である．
+したがって半正定値（<a href="#yamamoto">ibid.</a> &#167;定理2.12）であり，任意の\(w \in \mathbb{R}^p\)に対して\(w^\mathsf{T} S w \geq 0\)を満たす．このとき固有値はすべて非負である（<a href="#yamamoto">ibid.</a>定理2.14）．異なる
+\(r\) \((\leq p)\)
+個の固有値
+\(\lambda^{(1)} &gt; \cdots &gt; \lambda^{(r)} \geq 0\)
+とそれぞれに対応する固有ベクトル
+\(w^{(1)},\,\ldots,\,w^{(r)}\)
+が得られたと仮定する．このとき
+\(r\)
+次元の
+\(n\)
+個のベクトル
+\begin{align*}
+    \begin{pmatrix}
+        w^{(1)}{}^\mathsf{T} v^{(1)} \\
+        \vdots \\
+        w^{(r)}{}^\mathsf{T} v^{(1)}
+    \end{pmatrix}
+    ,\,\ldots,\,
+    \begin{pmatrix}
+        w^{(1)}{}^\mathsf{T} v^{(n)} \\
+        \vdots \\
+        w^{(r)}{}^\mathsf{T} v^{(n)}
+    \end{pmatrix}
+\end{align*}
+は，
+元の
+\(v^{(1)},\,\ldots,\,v^{(n)}\)
+が表していた情報を，もちろん多少の情報の損失はあるが，簡潔に表している．詳細は<a href="#konishi">小西[5]</a>などを参照．</p>
+</section>
+<section id="materials">
+  <h2>参考文献</h2>
+  <ol class="citation">
+    <li id="yukie">雪江明彦(2006) 『線形代数概説』培風館．</li>
+    <li id="miyajima">宮島静雄(2003) 『微分積分学II』共立出版．</li>
+    <li id="yamamoto">山本哲朗(2010) 『行列解析の基礎 Advanced線形代数』サイエンス社．</li>
+    <li id="matsumoto">松本幸夫(1985) 『トポロジー入門』岩波書店．</li>
+    <li id="konishi">小西貞則(2021) 『多変量解析入門&mdash;線形から非線形へ&mdash;〔電子書籍版〕』岩波書店．</li>
+  </ol>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@pecorarista">
+    <meta name="twitter:title" content="{{ title + ' — pecorarista.com' }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="https://pecorarista.com/static/images/avatar.png">
+    <link rel="icon" href="/favicon.ico">
+    {% include 'nunjucks/_layout/_styles.njk' %}
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        {% include 'nunjucks/_layout/_navbar.njk' %}
+      </header>
+      <main>
+        <div class="container">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </main>
+      <footer>
+        {% include 'nunjucks/_layout/_footer.njk' %}
+      </footer>
+    </div>
+    {% include 'nunjucks/_layout/_scripts.njk' %}
+    {% if mathematical %}
+      <script src="/static/js/mathjax.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js?config=TeX-AMS_HTML"></script>
+    {% endif %}
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

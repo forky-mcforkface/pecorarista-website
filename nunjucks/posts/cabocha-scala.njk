@@ -1,0 +1,56 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set title = 'ScalaからCaboChaを使う' %}
+{% set posted = '2016-11-22' %}
+{% set updated = '2019-03-17' %}
+
+{% block post %}
+<section id="Requirements">
+  <h2>事前に必要なもの</h2>
+  <ol>
+    <li>Scala (2.x)</li>
+    <li>sbt (1.x)</li>
+    <li>CaboChaのインストールが済んでいること。</li>
+  </ol>
+</section>
+
+<section id="Java">
+  <h2>Javaライブラリのコンパイル</h2>
+  <p>CaboChaインストールのときに使ったソースコードが残っていればそれを使ってください。捨ててしまった場合は<a class="uri" href="https://github.com/taku910/cabocha">https://github.com/taku910/cabocha</a>からクローンしてください。</p>
+  <p><code>cabocha/java/Makefile</code>の<code>INCLUDE</code>を使っているJavaに合わせて変更します。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">Makefile</span>
+    </div>
+  {% includeSourceCode 'codes/cabocha.makefile', 'makefile' %}
+  </div>
+  <p>どのJavaを使っているのかわからない場合は、<code>which java</code>や<code>update-java-alternatives</code>で調べてください。変更が終わったら<code>cabocha/java</code>ディレクトリで<code>make</code>と打ち込んでコンパイルします。</p>
+</section>
+
+<section id="Scala">
+  <h2>Scalaからの利用例</h2>
+  <p>実際にプロジェクトを作成して使ってみることにします。まず、先ほど生成された<code>CaboCha.jar</code>と<code>libCaboCha.so</code>をプロジェクトの<code>lib</code>ディレクトリにコピーします。</p>
+  <div class="code-container no-header">
+  {% includeSourceCode 'codes/cabocha.sh', 'shell' %}
+  </div>
+  <p><code>project_name/src/main/scala/example/Hello.scala</code>を編集します。</p>
+<div class="code-container">
+  <div class="code-header">
+    <span class="filename">project_name/src/main/scala/example/Hello.scala</span>
+  </div>
+  {% includeSourceCode 'codes/hello.scala', 'scala' %}
+</div>
+  <p><code>project_name/src/main/scala/example/CaboChaWrapper.scala</code>を作成します。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">project_name/src/main/scala/example/CaboChaWrapper.scala</span>
+    </div>
+    {% includeSourceCode 'codes/CaboChaWrapper.scala', 'scala' %}
+  </div>
+  <p><code>sbt run</code>で実行します。</p>
+  <div class="code-container">
+    <div class="code-header">実行結果</div>
+    {% includeSourceCode 'codes/cabocha-output.txt', 'text' %}
+  </div>
+</section>
+{% endblock %}

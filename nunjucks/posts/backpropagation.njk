@@ -1,0 +1,301 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'en' %}
+{% set mathematical = 'true' %}
+{% set title = 'Calculating Backpropagation Using Fréchet Derivatives' %}
+{% set posted = '2022-10-09' %}
+{% set updated = '2022-10-15' %}
+
+{% block post %}
+<section>
+<p>Consider a multilayer perceptron consisting of \(L\) layers, whose \(\ell\)-th layer has \(n(\ell)\) nodes.
+The loss function is the squared error
+\begin{align*}
+  E(z) =
+  \frac{1}{2}
+  {
+    \left\|
+      z  - y
+    \right\|
+  }^2,
+\end{align*}
+and the activation function for the \(\ell\)-th layer is
+\(\sigma^{(\ell)}\colon \mathbb{R}^{n(\ell)} \to \mathbb{R}^{n(\ell)}\)
+and expressed as
+\begin{gather*}
+  \sigma^{(\ell)}(x) =
+    \begin{pmatrix}
+      \sigma_1^{(\ell)}(x_1) \\
+      \vdots \\
+      \sigma_{n(\ell)}^{(\ell)}\left(x_{n(\ell)}\right)
+    \end{pmatrix},\\[5pt]
+\end{gather*}
+where each \(\sigma^{(\ell)}_i\colon \mathbb{R} \to \mathbb{R}\) is differentiable.
+Let \(u^{(\ell)} \in \mathbb{R}^{n(\ell)}\) be the input to the \(\ell\)-th layer
+and \(z^{(\ell)} \in \mathbb{R}^{n(\ell)}\) be the output from the \(\ell\)-th layer:
+\begin{align*}
+  z^{(\ell)} = \sigma^{(\ell)} \left( u^{(\ell)} \right).
+\end{align*}
+The weight of the \(\ell\)-th layer is
+\(W^{(\ell)} \in \mathbb{R}^{n(\ell) \times n(\ell - 1)}\), which is expressed as
+\begin{align*}
+  W^{(\ell)} =
+  \begin{pmatrix}
+    w_{1,\,1}^{(\ell)}       &amp; \cdots &amp; w_{1,\,n(\ell - 1)}^{(\ell)} \\
+    \vdots                   &amp; \ddots &amp; \vdots \\
+    w_{n(\ell),\,1}^{(\ell)} &amp; \cdots &amp; w_{n(\ell),\,n(\ell - 1)}
+  \end{pmatrix},
+\end{align*}
+so this means that
+\begin{align*}
+  u^{(\ell)} = W^{(\ell)} z^{(\ell - 1)} = W^{(\ell)} \sigma^{(\ell - 1)} \left( u^{(\ell - 1)} \right),\quad
+\end{align*}
+The multi-layer perceptron defined above is illustrated as the figure below.</p>
+<figure class="centered">
+  <figcaption><strong>Figure 1:</strong> Architecture of the neural network.</figcaption>
+  <img
+    src="/static/images/nn.svg"
+    alt="Architecture of the neural network"
+    style="background-color: transparent; width: 100%; height: auto; max-width: 800px; margin-top: 2ex;"
+  >
+</figure>
+<p>
+The goal of this post is to derive the derivative of \(E\) with respect to \(W^{(\ell)}\),
+but it suffices to show the case of \(W^{(L)}\) is \(W^{(L - 1)}\)
+because others are easily derived from them.
+First, assume each variable is one-dimensional to aid intuitive understanding.
+Then,
+\begin{gather*}
+  \frac{dE}{dW^{(L)}} =
+    \frac{dE}{dz^{(L)}}
+    \frac{dz^{(L)}}{du^{(L)}}
+    \frac{du^{(L)}}{dW^{(L)}},
+\end{gather*}
+\begin{gather*}
+  \frac{dE}{dW^{(L - 1)}} =
+    \frac{dE}{dz^{(L)}}
+    \frac{dz^{(L)}}{du^{(L)}}
+    \frac{du^{(L)}}{du^{(L - 1)}}
+    \frac{du^{(L - 1)}}{dW^{(L - 1)}}.
+\end{gather*}
+In general cases where dimensions are greater than one, the following analogous formula holds
+\begin{align}
+  D_{W^{(L)}} E\left(W^{(L)}\right)(H) =
+  \left(D_{z^{(L)}} E\left(z^{(L)}\right)
+  \circ D_{u^{(L)}} z^{(L)}\left(u^{(L)}\right)
+  \circ D_{W^{(L)}} u^{(L)}\left(u^{(L)}\right)
+  \right)(H),
+  \label{chain-L}
+\end{align}
+\begin{align}
+  &amp;D_{W^{(L - 1)}} E\left(W^{(L - 1)}\right)(H)
+  \notag \\
+  &amp;= \left(D_{z^{(L)}} E\left(z^{(L)}\right)
+  \circ D_{u^{(L)}} z^{(L)}\left(u^{(L)}\right)
+  \circ D_{u^{(L - 1)}} u^{(L)}\left(u^{(L - 1)}\right)
+  \circ  D_{W^{(L - 1)}} u^{(L - 1)}\left(u^{(L - 1)}\right)
+  \right)(H),
+  \label{chain-L-1}
+\end{align}
+where \(D_x f(x_0)(h)\) denotes the Fréchet derivative of \(f\) at a point \(x_0\) with respect to \(x\)
+along \(h\).
+
+Calculation of \((\ref{chain-L}) and (\ref{chain-L-1})\) is decomposed into the following calculations <span class="mathitem">(C1)</span>, <span class="mathitem">(C2)</span>, and <span class="mathitem">(C3)</span>.</p>
+<ol class="math">
+  <li class="capc">
+    Calculate \(D_{z} E(z)(h) \)
+    where \(E\colon \mathbb{R}^n \to \mathbb{R}_+\)
+    is defined as \(\displaystyle E = \frac{1}{2}{\left\|z - y\right\|}^2\).
+  </li>
+  <li class="capc">
+    Calculate \(D_{u} \sigma^{(\ell)}(u)(h)\)
+    where \(\sigma\colon \mathbb{R}^n \to \mathbb{R}^n\)
+    is of the form
+    \(\displaystyle \sigma^{(\ell)}(u) = \begin{pmatrix}\sigma^{(\ell)}_1(u_1) \\ \vdots \\ \sigma^{(\ell)}_n(u_n)\end{pmatrix}\).
+  </li>
+  <li class="capc">
+    Calculate \(D_W (W \mapsto Wz) (W) (H) \).
+  </li>
+</ol>
+
+<h4><span class="mathitem" style="margin-right: 0.25rem;">(C1)</span> \(D_zE(z)(h)\)</h4>
+<p>Note that \({\|U\|}^2 = \langle U,\, U \rangle\) and that \( \langle U,\, V\rangle = \trace (U{}^\top V)\).
+\begin{align*}
+  &amp;E(z + h) - E(z) \\
+  &amp;= \frac{1}{2}\| (z + h) - y \|^2 - \frac{1}{2}\| z - y \|^2 \\
+  &amp;= \langle z + h - y ,\, z + h - y \rangle - \frac{1}{2} {\|z - y\|}^2 \\
+  &amp;= \frac{1}{2}{\|z - y\|}^2 + \langle h,\, z - y \rangle + \frac{1}{2}{\|h\|}^2 - \frac{1}{2} {\|z - y\|}^2 \\
+  &amp;\leq \langle z - y,\, h \rangle + \frac{1}{2} \|h\|^2
+\end{align*}
+Therefore
+\begin{align}
+  D_z E(z)(h) = \langle z - y,\, h \rangle.
+  \label{derivative-of-norm}
+\end{align}
+</p>
+<h4><span class="mathitem" style="margin-right: 0.25rem;">(C2)</span> \(D_u \sigma^{(\ell)}(u)(h)\)</h4>
+<p>Since we assume each \(\sigma_i\) is differentiable,
+for any \(\varepsilon &gt; 0\),
+we can take \(h_i\) satisfying
+\begin{align*}
+  \left|
+    \sigma_i^{(\ell)}(u_i + h_i) - \sigma_i^{(\ell)}(u_i)
+    - \frac{d\sigma^{(\ell)}_i}{du_i}\left(u_i\right)  h_i
+  \right|
+  \leq \varepsilon \left|h_i\right|
+\end{align*}
+for all \(i \in \{1,\,\ldots,\,n\}\). Therefore we have the evaluation below:
+\begin{align*}
+&amp;
+\left\|
+  \sigma^{(\ell)}(u + h) - \sigma^{(\ell)}(u) -
+    \begin{pmatrix}
+    \displaystyle \frac{d \sigma^{(\ell)}}{du_1}\left(u_1\right) &amp;
+      \cdots &amp;
+      \displaystyle \frac{d \sigma^{(\ell)}}{du_n} \left(u_n\right)
+    \end{pmatrix}
+    \begin{pmatrix}
+      h_1 \\
+      \vdots \\
+      h_n
+    \end{pmatrix}
+\right\| \\
+&amp;= \sqrt{\sum_{k = 1}^n \left(\sigma^{(\ell)}_k(u_k + h_k)  - \sigma^{(\ell)}_k(u_k) - \sigma^{(\ell)}_k(u_k) h_k\right)^2 } \\
+&amp;\leq \sqrt{\sum_{k = 1}^n \varepsilon^2 |h_k|^2 }  \\
+&amp;= \varepsilon \|h\|
+\end{align*}
+This means that
+\begin{align}
+  D_u \sigma^{(\ell)}(u)(h)
+  = J^{(\ell)}_u h,
+  \label{derivative-of-activation}
+\end{align}
+where
+\begin{align*}
+  J^{(\ell)}_{u} =
+    \begin{pmatrix}
+      \displaystyle \frac{d \sigma^{(\ell)}_1}{ d u_1 }\left(u_1\right) &amp; \cdots &amp; O \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      O &amp; \cdots &amp; \displaystyle \frac{d\sigma^{(\ell)}_n}{du_n}\left(u_n\right)
+    \end{pmatrix} \in \mathbb{R}^{n \times n}.
+\end{align*}
+</p>
+<h4><span class="mathitem" style="margin-right: 0.25rem;">(C3)</span> \(D_W (W \mapsto Wz) (W) (H) \)</h4>
+<p>
+Since
+\begin{align*}
+  (W + H) z - W z = Hz,
+\end{align*}
+we obtain
+\begin{align}
+  D_W (W \mapsto Wz) (W) (H) = Hz.
+  \label{derivative-of-product-right}
+\end{align}
+</p>
+</section>
+<section>
+<h3>Backpropagation</h3>
+<p>Now we can calculate \((\ref{chain-L}) and (\ref{chain-L-1})\) by
+using \((\ref{derivative-of-norm})\),
+\((\ref{derivative-of-activation})\),
+and \((\ref{derivative-of-product-right})\).
+First, \((\ref{chain-L})\) is calculated as
+\begin{align*}
+  &amp;D_{W^{(L)}} E\left(W^{(L)}\right)(H) \\
+  &amp;=
+  \left(D_{z^{(L)}} E\left(z^{(L)}\right)
+  \circ D_{u^{(L)}} z^{(L)}\left(u^{(L)}\right)
+  \circ D_{W^{(L)}} u^{(L)}\left(u^{(L)}\right)
+  \right)(H) \\
+  &amp;=
+  \left( h \mapsto \left\langle z^{(L)} - y,\, h \right\rangle \right)
+  \circ \left( h \mapsto J^{(L)}_{u^{(L)}} \right)
+	\circ \left(H \mapsto H z^{(L - 1)}\right)(H) \\
+  &amp;=
+  \left\langle z^{(L)} - y,\, J^{(L)}_{u^{(L)}} H z^{(L - 1)} \right\rangle \\
+  &amp;= \trace \left( \left(z^{(L)} - y\right)^\top J^{(L)}_{u^{(L)}} H z^{(L - 1)} \right) \\
+  &amp;= \trace \left( z^{(L - 1)}{} \left(z^{(L)} - y\right)^\top J^{(L)}_{u^{(L)}} H \right) \\
+  &amp;= \trace \left( {\left(J^{(L)}_{u^{(L)}} \left(z^{(L)} - y\right) z^{(L - 1)}{}^\top \right)}^\top H \right)
+\end{align*}
+Here I used the formula \(\trace(ABC) = \trace(CBA) \) and symmetry \(J^{(L)}_{u^{(L)}} = J^{(L)}_{u^{(L)}}{}^\top \).
+Each \(\displaystyle \frac{\partial E}{\partial w_{i,\, j}^{(L)}}\) is computed by letting \(H = hE_{i,\,j}\)
+where
+\begin{gather*}
+  \begin{array}{c}
+      \begin{array}{ccccccc}
+                     &amp;        &amp;   &amp; \downarrow\ \text{\(j\)-th col.} &amp;   &amp;        &amp; \\
+      E_{i,\,j} = (0 &amp; \cdots &amp; 0 &amp; he_i &amp; 0   &amp; \cdots &amp; 0),\quad
+      \end{array}
+  \end{array} \\
+  e_i =
+  \left(
+  \begin{array}{c}
+    0 \\
+    \vdots \\
+    0 \\
+    1 \\
+    0 \\
+    \vdots \\
+    0
+  \end{array}
+  \right)
+  \;
+  \begin{array}{c}
+    \\
+    \\
+    \\
+    \leftarrow\ \text{\(i\)-th row}\\
+    \\
+    \\
+    \\
+  \end{array},
+\end{gather*}
+and \(A =  J^{(L)}_{u^{(L)}} \left(z^{(L)} - y\right) z^{(L - 1)}{}^\top  \). Then,
+\begin{gather*}
+  \begin{array}{c}
+    \begin{array}{ccccccc}
+      &amp;        &amp;   &amp; \downarrow\ \text{\(j\)-th col.} &amp;   &amp;        &amp; \\
+      \displaystyle h \frac{\partial E}{\partial w_{i,\,j}}
+      = \trace (0 &amp; \cdots &amp; 0 &amp; (\text{\(A\)'s \(i\)-th row})^\top &amp; 0   &amp; \cdots &amp; 0)
+    \end{array}
+  \end{array} \\
+  \displaystyle \frac{\partial E}{\partial w_{i,\,j}} = [A]_{i,\, j},
+\end{gather*}
+where \([A]_{i,\,j}\) is the \((i,\,j)\)-the component of a matrix \(A\).
+</p>
+<p>Similarly, \((\ref{chain-L-1})\) is calculated as
+\begin{align*}
+  &amp;D_{W^{(L - 1)}} E\left(W^{(L - 1)}\right)(H)
+  \\
+  &amp;= \left(D_{z^{(L)}} E\left(z^{(L)}\right)
+  \circ D_{u^{(L)}} z^{(L)}\left(u^{(L)}\right)
+  \circ D_{u^{(L - 1)}} u^{(L)}\left(u^{(L - 1)}\right)
+  \circ  D_{W^{(L - 1)}} u^{(L - 1)}\left(u^{(L - 1)}\right)
+  \right)(H) \\
+  &amp;= \left( h \mapsto \left\langle z^{(L)} - y,\, h \right\rangle \right)
+  \circ \left( h \mapsto J^{(L)}_{u^{(L)}} h \right)
+  \circ \left( h \mapsto W^{(L)} J^{(L - 1)}_{u^{(L - 1)}} h  \right)
+  \circ \left( H \mapsto H z^{(L - 1)} \right)(H) \\
+  &amp;= \left\langle z^{(L)} - y,\, J^{(L)}_{u^{(L)}} W^{(L)} J^{(L - 1)}_{u^{(L - 1)}} H z^{(L - 2)} \right\rangle \\
+  &amp;= \trace \left( {(z^{(L)} - y)}^\top J^{(L)}_{u^{(L)}} W^{(L)} J^{(L - 1)}_{u^{(L - 1)}} H z^{(L - 2)} \right) \\
+  &amp;= \trace \left( z^{(L - 2)} \left(z^{(L)} - y\right)^\top J^{(L)}_{u^{(L)}} W^{(L)} J^{(L - 1)}_{u^{(L - 1)}} H \right) \\
+  &amp;= \trace \left( {\left(J^{(L - 1)}_{u^{(L - 1)}} W^{(L)}{}^\top J^{(L)}_{u^{(L)}} \left(z^{(L)} - y\right) z^{(L - 2)}{}^\top \right)}^\top H \right)
+\end{align*}
+Define \(\varDelta^{(\ell)}\) by
+\begin{align*}
+  \varDelta^{(\ell)} =
+  \begin{cases}
+    J_{u^{(L)}} (z^{(L)} - y)
+    &amp; \text{if \(\ell = L\),} \\
+    J^{(\ell)}_{u^{(\ell)}} W^{(\ell + 1)}{}^\top \varDelta^{(\ell + 1)}
+    &amp; \text{if \(\ell \in \{1,\,\ldots,\, L - 1\}\).}
+  \end{cases}
+\end{align*}
+Then
+\begin{align*}
+  \frac{\partial E}{\partial w^{(\ell)}_{i,\,j}} = \left[ \varDelta^{(\ell)} z^{(\ell - 1)} \right]_{i,\, j}.
+\end{align*}
+Since each \(\varDelta^{(\ell)}\) is computed from \(\varDelta^{(\ell + 1)}\),
+this computation is called <em>back propagation</em>.
+</p>
+</section>
+{% endblock %}

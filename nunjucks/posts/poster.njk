@@ -1,0 +1,72 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set title = 'LaTeX (Beamer)で学会発表用のポスターを作る' %}
+{% set posted = '2015-08-24' %}
+{% set updated = '2019-03-31' %}
+
+{% block post %}
+<section>
+<p>初めて学会の発表で使うポスターを作るにあたり、分からないことが多かったため、調べたり試行錯誤した内容についてまとめておこうと思います。</p>
+<p>まず、どのツールを使うかですが、周りの数人に聞いたところ全員が<a href="https://products.office.com/ja-jp/powerpoint" target="_blank">PowerPoint</a> を使っているようでした。なので私もPowerPointを使るつもりだったのですが、以前に</p>
+<ul>
+  <li>テストエビデンスのスクショをエクセルに貼り付ける作業</li>
+  <li>Officeのバージョンアップによってレイアウトが崩れたファイルをいじる作業</li>
+</ul>
+<p>などを行っていたため、MS Officeを使うことに抵抗があり、LaTeX (Beamer)で作ることにしました。</p>
+</section>
+<section>
+  <h2>1. どんな感じになるのか</h2>
+  <p>デザインのセンス次第でいくらでも綺麗なものは作れると思いますが以下のような感じのものが作れます。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>
+        Beamerで作成したポスターの例
+      </figcaption>
+      <a href="/static/images/complex-poster.svg">
+        <img src="/static/images/complex-poster.svg" alt="複雑なポスターの例" style="max-width: 1000px;">
+      </a>
+    </figure>
+  </div>
+  <p>印刷の向きに関しては<code>beamerposter</code>のオプションで</p>
+  <ul>
+    <li>横：<code>orientation=landscape</code></li>
+    <li>縦：<code>orientation=portrait</code></li>
+  </ul>
+  <p>のように指定することができます。</p>
+  <div class="code-container">
+    <div class="code-header">上のポスターのコード</div>
+    {% includeSourceCode 'latex/complex-poster.tex', 'latex' %}
+  </div>
+</section>
+<section>
+  <h2>2. 単純なポスターを作ってみる</h2>
+  <p>TeX Liveに収録されている<a href="https://ctan.org/pkg/beamerposter">beamerposter</a>パッケージを使います。以下のようなコードを<span class="monospace">simple-poster.tex</span>のような名前で保存してください。</p>
+  <div class="code-container">
+    <span class="filename">simple-poster.tex</span>
+    {% includeSourceCode 'latex/simple-poster.tex', 'latex' %}
+  </div>
+  <p>次に<span class="monospace">beamerthemeSimplePoster.sty</span>という名前で以下の内容を現在作業しているディレクトリに保存してください。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">beamerthemeSimplePoster.sty</span>
+    </div>
+    {% includeSourceCode 'latex/beamerthemeSimplePoster.sty', 'latex' %}
+  </div>
+  <p>LuaLaTeXでタイプセットしたいので上の2つと同じ場所に設定ファイル<span class="monospace">latexmkrc</span>を置いておきます。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">latexmkrc</span>
+    </div>
+    {% includeSourceCode 'latex/latexmkrc.pl', 'perl' %}
+  </div>
+  <p>これらのファイルがある場所で<code>latexmk poster.tex</code> コマンドを実行すると以下のような PDF ができあがります。</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <a href="/static/images/simple-poster.svg">
+        <img src="/static/images/simple-poster.svg" alt="単純なポスターの例" style="max-width: 1000px;">
+      </a>
+    </figure>
+  </div>
+  <p>あとは色を変更したり、中身を追加していくだけです。</p>
+</section>
+{% endblock %}

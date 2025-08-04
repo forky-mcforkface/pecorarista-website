@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{newtxtext,newtxmath}
+\usepackage[noend]{algpseudocode}
+\pagestyle{empty}
+\begin{document}
+    \begin{algorithmic}[1]
+        \Procedure{Insertion-Sort}{$A$}
+            \For{$j = 2 \, \ldots \, A.\mathrm{length}$}
+            \State{$k = A[j]$}
+                \State{$i = j - 1$}
+                \While{$i > 0$ and $A[i] > k$}
+                    \State{$A[i + 1] = A[i]$}
+                    \State{$i = i - 1$}
+                \EndWhile
+                \State{$A[i + 1] = k$}
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{document}

@@ -1,0 +1,45 @@
+.toc {
+  &-title {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &-container {
+    display: table;
+    width: auto;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    margin-top: 60px;
+    margin-bottom: 9px;
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+
+    ol {
+      padding-right: 2rem;
+      padding-left: 1.5rem;
+      counter-reset: item;
+
+      li {
+        list-style: none;
+        counter-increment: item;
+
+        &::before {
+          padding-right: 10px;
+          content: counter(item);
+        }
+
+        ol {
+          padding-left: 1.5rem;
+
+          li {
+            &::before {
+              padding-right: 10px;
+              content: counters(item, '.') ' ';
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+@use 'variables';
+
+:lang(ja) {
+  p,
+  li {
+    mjx-container:not([display])::before {
+      display: inline;
+      font-family: variables.$jp-font, monospace;
+      font-size: 50%;
+      font-weight: normal;
+      content: ' ';
+    }
+  }
+
+  span.head > mjx-container:not([display])::before {
+    content: '';
+  }
+}
+
+:lang(ar) {
+  font-family: variables.$arabic-font, sans-serif;
+}
+
+:lang(arc) {
+  font-family: variables.$hebrew-font, sans-serif;
+}
+
+:lang(he) {
+  font-family: variables.$hebrew-font, sans-serif;
+}
+
+:lang(ru) {
+  font-family: variables.$latin-font, sans-serif;
+}
+
+.ipa {
+  font-family: variables.$ipa-font, serif;
+  font-size: 1.13rem;
+}
+
+.romanization {
+  font-family: variables.$romanization-font, sans-serif;
+  font-size: 1.13rem;
+  font-style: italic;
+}
+
+.grammar,
+.lang-code {
+  font-family: variables.$latin-font, serif;
+  font-variant: small-caps;
+  font-variant-caps: small-caps;
+}
+
+span.normal {
+  font-family: variables.$latin-font, sans-serif;
+}
+
+.cf {
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+}
+
+.root {
+  font-family: variables.$latin-font, sans-serif;
+  font-weight: bold;
+  color: variables.$pink;
+
+  &::after {
+    content: ' ';
+  }
+}
+
+abbr[data-title] {
+  position: relative;
+  display: inline-block;
+  font-family: variables.$latin-font, serif;
+  cursor: help;
+  border-bottom: 1px dotted variables.$black;
+
+  &.grammar {
+    font-variant: small-caps;
+    font-variant-caps: small-caps;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    padding: 4px 8px;
+    font-family: variables.$latin-font, variables.$jp-font, sans-serif;
+    font-variant: normal;
+    font-variant-caps: normal;
+    color: white;
+    white-space: nowrap;
+    pointer-events: none;
+    content: attr(data-title);
+    background: variables.$gray;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px rgba(0 0 0 / 40%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    transform: translateX(-50%);
+  }
+
+  &:hover::after,
+  &:focus::after {
+    opacity: 1;
+  }
+}
+
+h3.rtl {
+  text-align: right;
+}

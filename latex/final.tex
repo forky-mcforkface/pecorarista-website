@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[noend]{algpseudocode}
+%%%%% フォント関連 %%%%%
+\usepackage{unicode-math}
+\setmainfont[Ligatures=TeX]{TeX Gyre Termes}
+\setmathfont{TeX Gyre Termes Math}
+\newfontfamily\algfont{TeX Gyre Cursor}
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\algfont}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%
+\algnewcommand\algorithmicto{\textbf{to}}
+\algdef{SE}[FOR]{ForTo}{EndFor}[2]{%
+    \algorithmicfor\ #1\ \algorithmicto\ #2\ \algorithmicdo
+}{%
+    \algorithmicend\ \algorithmicfor
+}
+\algrenewcommand\algorithmicdo{}
+\let\oldReturn\Return
+\renewcommand{\Return}{\State\oldReturn}
+\algtext*{EndFor}
+\algrenewcommand\alglinenumber[1]{{\texttt{#1:}}}
+\newenvironment{broadalgo}{%
+  \setlength{\baselineskip}{17pt}
+  \begin{algorithmic}[1]
+}{%
+  \end{algorithmic}
+}
+\pagestyle{empty}
+\begin{document}
+    \begin{broadalgo}
+        \Procedure{Insertion-Sort}{$A$}
+        \ForTo{$j = 2$}{$A.\mathrm{length}$}
+            \State{$k = A[j]$}
+                \State{$i = j - 1$}
+                \While{$i > 0$ and $A[i] > k$}
+                    \State{$A[i + 1] = A[i]$}
+                    \State{$i = i - 1$}
+                \EndWhile
+                \State{$A[i + 1] = k$}
+            \EndFor
+        \EndProcedure
+    \end{broadalgo}
+\end{document}

@@ -1,0 +1,102 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set lang = 'ja' %}
+{% set title = 'LaTeXでRTL（右横書き）の文書をつくる' %}
+{% set posted = '2016-05-23' %}
+{% set updated = '2019-03-25' %}
+
+{% block post %}
+<section>
+  <p>これは<a href="http://www.adventar.org/calendars/1734">TeX &amp; LaTeX Advent Calendar</a> 12日目の記事です。</p>
+  <p>趣味で語学・言語学をやっていると、左横書き以外の書字方向の表記体系を使う場面が多くあります。そのような場面においてLaTeXは非常に有効です。以下で、どのように有効なのか、そして実際にどのように使っていくのかについて、右横書きを中心に見ていきたいと思います。</p>
+</section>
+<section id="direction">
+  <h2>書字方向の種類</h2>
+  <p>本題に入る前に、書字方向にはどのようなものがあるか簡単に紹介します。</p>
+  <ol>
+    <li>
+      <p><strong>（下の行に移る）左横書き</strong>
+        <br>ラテン文字や日本語の横書きなど、多くの言語で採用されている書字方向です。左横書きと呼ぶと「左から進んで来る」のか「左に進んで行く」のか紛らわしいので、代わりに英語の略称で<strong>LTR</strong> (Left-to-Right)と呼んでいきます。LaTeXでは<a href="https://www.ctan.org/pkg/babel">Babel</a>あるいはその後継の<a href="https://www.ctan.org/pkg/polyglossia">Polyglossia</a>を使えば多くのLTRの文字（正確には言語）の組版が可能です。</p>
+    </li>
+    <li>
+      <p><strong>（下の行に移る）右横書き</strong>
+        <br>アラビア文字やヘブライ文字などで使われています。LTRに合わせて<strong>RTL</strong> (Right-to-Left)と呼んでいきます。日本語の文書でも左横書きが普及する前に使われていたことがあります。LaTeXでの扱いは次節以降で説明します。</p>
+    </li>
+    <li>
+      <p><strong>上から下、右の列から左の列へ移る縦書き</strong>
+        <br>日本語や中国語を縦書きしたときの書法です。TBRL (top-to-down, right-to-left)と呼ばれることがあります。日本語がTBRLなのでLaTeXにおけるTBRLを説明した日本語の資料はたくさん見つかります。</p>
+      <ul style="margin-bottom: 20px;">
+        <li><a href="https://texwiki.texjp.org/?pTeX%E3%81%A8%E5%A4%9A%E8%A8%80%E8%AA%9E%E5%87%A6%E7%90%86#cjkinqd">TeX Wiki pTeXと多言語処理</a></li>
+        <li><a href="http://www.fugenji.org/~thomas/texlive-guide/vertical.html">縦書きしてみよう</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>上から下、左の列から右の列へ移る縦書き</strong>
+        <br>モンゴル文字やソグド文字などがこれに該当します。モンゴル文字については<a href="https://www.ctan.org/pkg/montex">MonTeX</a>というものがあるようですが、全く知識がないので説明は割愛します。</p>
+    </li>
+    <li>
+      <p><strong><a href="https://ja.wikipedia.org/wiki/%E7%89%9B%E8%80%95%E5%BC%8F">牛耕式 (βουστροφηδόν)</a></strong>
+        <br>古代ギリシャ文字の碑文などに使われていた書字方向です。左から右に進み、右端にたどり着いたら、今度は下の行に移り、左右反転させた文字を右から左に書いていく書法です。その様子が牛車で畑を耕す様子に似ているため名付けられました。LaTeXにおいて牛耕式を扱う方法については、以下の記事が参考になります。</p>
+        <ul style="margin-bottom: 20px;">
+          <li><a href="http://d.hatena.ne.jp/acetaminophen/20150724/1437743800">アセトアミノフェンの気ままな日常  牛耕式とロンゴロンゴ</a></li>
+        </ul>
+    </li>
+  </ol>
+</section>
+<section id="how-to-write-rtl-text">
+  <h2>RTLのテキストを編集する方法</h2>
+  <p>最近のデスクトップ環境は、Unicodeへの対応やフォントの普及が進み、アラビア文字やヘブライ文字を打ち込んでも、その文字が出力されるようになりました。例えばMS Wordでは書字方向を切り替える機能を使ってアラビア文字の混じった文書を作成できます。MS WordによるRTLで少し厄介な点は、<strong>行ごとに書字方向を切り替えなければならない</strong>、ということです。もちろん可読性の観点から同一の行内にLTR/RTLが入り乱れているのはよくないと思いますが、語学のテキストではそれをせざるを得ません。<strong>もし混ぜて書いてしまうとピリオドの位置がおかしくなります</strong>。これはピリオドはラテン文字などと共通したものを使っているからです。もうひとつの問題は<strong>カーソルの移動がわかりにくくなる</strong>ことです。例えばアラビア文字の上で[→]を押すと左に移動します。</p>
+  <p>MS Wordを使わずテキストエディタを用いる方法もあります。しかしその場合<strong>環境によっては合字が正しく表示されず、また文字どうしが重なり合って非常に見にくい</strong>という問題が生じる可能性が高いです。例えば広く使われているGnomeターミナルはまだアラビア文字の合字に対応していません。</p>
+  <p>またどの編集用ソフトを使ったとしても、直接アラビア文字を入力すると、<strong>キーボード入力のためにキーの配置を覚えるのが大変</strong>という問題もあります。本格的にアラビア語やヘブライ語を勉強している人は、ブラウザなどに直接入力する過程で覚えていくでしょうが、初学者やとりあえず使いたい人にとっては覚えることが多くて大変なのは事実です。</p>
+  <h3>LaTeXを使ったRTL</h3>
+  <p>アラビア語に精通している人の可読性や検索利便性を考えると、アラビア語を直接入力するほうが好ましいでしょう。しかし前節で述べたような問題が生じる以上、もしラテン文字転写を変換できる機構があるならばそれを使うほうが現実的です。LaTeXにはアラビア文字を扱うArabTeXというパッケージがあります。これを使うとアラビア語で使うアラビア文字に限らず、ペルシア語やウルドゥー語などアラビア語の文字を拡張した文字を使う言語を入力することができます。さらにヘブライ語モードというのもあり、ヘブライ語もラテン字で入力できます。またArabTeXのLuaTeX対応版であるArabLuaTeXというものもあります。Fontspecを使っていろなフォントを試したりする場合はこちらが便利です。ArabTeXと比較すると機能は少なめですが、アラビア語を扱う上では問題ないと思います。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>ArabLuaTeXを使用した文書の例</figcaption>
+      <img src="/static/images/arab.svg" style="max-width: 800px;" alt="次のラテン文字転写の簡易表記を入力し、アラビア語の組版を実現している：kānat rīḥu l-šamāli tataǧādalu wa l-šamsa fī ayyin minhumā kānat aqwā mina l-ḫurā">
+    </figure>
+  </div>
+  <div class="code-container">
+    <div class="code-header">上の文書のコード</div>
+    {% includeSourceCode 'latex/arab.tex', 'latex' %}
+  </div>
+  <p>ラテン文字との対応規則は<a href="https://archive.org/details/Dict_Wehr.pdf">Hans Wehr</a>などの辞書で使われる転記法と似ているため、慣れている人はすぐに覚えられるでしょう。一方で、上記の例を見ればわかるように、ラテン文字を入力する際には<strong>母音を補って入力しなければならず、初心者にはやや厳しいです</strong>。</p>
+  <h3>日本語でもRTLをやってみる</h3>
+  <p>ArabLuaTeX の中身を見るとわかりますが、<code>\textdir TRT</code>で囲まれている部分がRTLになります。これを使えばRTLで日本語が書けるので、少し遊んでみました。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>日本語のRTLの例</figcaption>
+      <img src="/static/images/rtl.svg" style="max-width: 800px;" alt="第6章単 因子およびンダルョジの形準標 館道武 ターャジス">
+    </figure>
+  </div>
+  <div class="code-container">
+    <div class="code-header">上の文書のコード</div>
+      {% includeSourceCode 'latex/rtl.tex', 'latex' %}
+  </div>
+  <p>タイトルの元ネタは齋藤正彦「線型代数入門」にある有名な誤植です。最近の版では直っているようです。また「ターャジス」の元ネタは「スジャータ」のトラックに書かれている文字です（参照：<a href="https://nlab.itmedia.co.jp/nl/articles/1809/11/news113.html">『スジャータのトラックから「ターャジス」が廃止とのウワサ → 2018年1月の新型車両から順次「スジャータ」に』</a>）。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>齋藤正彦「線型代数入門」</figcaption>
+      <a href="/static/images/linalg.jpg">
+        <img src="/static/images/linalg.jpg" alt="線型代数入門の誤植" style="max-width: 800px;">
+      </a>
+    </figure>
+  </div>
+</section>
+<section id="summary">
+  <h2>まとめ</h2>
+  <p>RTLの文字の混じった文書をMS Wordなどで作るときに問題になるのは以下の点でした。</p>
+  <ul>
+      <li>行ごとに書字方向を切り替えなければならない</li>
+      <li>同一行内で混ぜて書くとピリオドの位置がおかしくなる</li>
+      <li>カーソルの移動がわかりにくい</li>
+      <li>環境によっては文字が正しく表示されない</li>
+      <li>キー配列を覚えるのが大変</li>
+  </ul>
+  <p>ArabTeXやArabLuaTeXはこれらの問題を解決します。ただしラテン字を使う都合上、以下のような問題もあることに注意してください。</p>
+  <ul>
+      <li>母音を補って書かないといけない</li>
+      <li>表示したいものの原文があってもコピペしただけでは表示できない</li>
+  </ul>
+</section>
+{% endblock %}

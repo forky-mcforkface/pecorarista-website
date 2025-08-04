@@ -1,0 +1,26 @@
+@use 'variables';
+
+.navbar-dark {
+  background-color: variables.$dark-pink;
+
+  .container {
+    .navbar-brand {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .navbar-nav {
+      .separator {
+        padding: 0 0.5rem;
+        font-size: 1rem;
+        color: variables.$white;
+        vertical-align: middle;
+        pointer-events: none;
+      }
+    }
+
+    a.nav-link {
+      font-size: 1.2rem;
+    }
+  }
+}

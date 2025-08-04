@@ -1,0 +1,87 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = '確率的最適化手法Adamの論文のLemma 10.3' %}
+{% set posted = '2016-03-30' %}
+
+{% block post %}
+<section>
+<p><a href="http://arxiv.org/pdf/1412.6980v8">Adam: A Method for Stochastic Optimization</a>のLemma 10.3が、少し腑に落ちなかったので自分用に書いたメモです。</p>
+<p>論文中の証明では、帰納法の仮定から導かれる式
+\begin{align*}
+    \sum_{t = 1}^T \sqrt{\frac{g_{t,i}^2}{t}}
+    \leq 2
+    G_\infty\sqrt{\norm{g_{1:T,i}}_2^2 - g_{T,i}^2} + \sqrt{\frac{g_{T,i}^2}{T}}
+\end{align*}
+に、以下の不等式
+\begin{align*}
+  \sqrt{\norm{g_{1:T,i}}_2^2 - g_{T,i}^2} \leq \norm{g_{1:T,i}}_2 - \frac{g_{T,i}^2}{2\sqrt{TG_\infty^2}}
+\end{align*}
+を代入して
+\begin{align*}
+    \sum_{t = 1}^T \sqrt{\frac{g_{t,i}^2}{t}} \leq 2 G_\infty\norm{g_{1:T,i}}_2
+\end{align*}
+を示す、と書いてあります。</p>
+<p>しかし実際に代入してみると
+\begin{align*}
+  \sum_{t = 1}^T \sqrt{\frac{g_{t,i}^2}{t}}
+  &amp; \leq 2 G_\infty\sqrt{\norm{g_{1:T,i}}_2^2 - g_{T,i}^2} + \sqrt{\frac{g_{T,i}^2}{T}} \\
+  &amp; \leq 2G_\infty \parentheses{ \norm{g_{1:T,i}}_2 - \frac{g_{T,i}^2}{2\sqrt{TG_\infty^2}} } + \sqrt{\frac{g_{T,i}^2}{T}} \\
+  &amp;= 2G_\infty \norm{g_{1:T,i}}_2 - \frac{g_{T,i}^2}{\sqrt{T}} + \sqrt{\frac{g_{T,i}^2}{T}} \\
+  &amp;= 2G_\infty \norm{g_{1:T,i}}_2 + \frac{\sqrt{g_{T,i}^2} - g_{T,i}^2}{\sqrt{T}}
+\end{align*}
+となるので、<span class="quarter"></span>\(0 \lt \abs{g_{T,i}} \lt 1\)
+のとき成り立たないような気がします。大きな誤差にはならないのでこれでもいいのかもしれませんが、せっかくなので別な方法を考えてみたいと思います。</p>
+<p>上から抑える方法として以下のCauchy&ndash;Schwarzの不等式を使う方法が考えられます。</p>
+\begin{align*}
+  \sum_{t = 1}^T \sqrt{\frac{g_{t,i}^2}{t}}
+  &amp;=
+    \parentheses{
+      \begin{array}{c}
+        \sqrt{g_{1,i}^2} \\
+        \vdots \\
+        \sqrt{g_{T,i}^2}
+      \end{array}
+    }
+    \cdot
+    \parentheses{
+      \begin{array}{c}
+        1/\sqrt{1} \\
+        \vdots \\
+        1/\sqrt{T} \\
+    \end{array}
+    } \\
+  &amp; \leq
+  \norm{
+    \parentheses{
+      \begin{array}{c}
+        \sqrt{g_{1,i}^2} \\
+        \vdots \\
+        \sqrt{g_{T,i}^2}
+      \end{array}
+    }}_2
+    \norm{
+      \parentheses{
+        \begin{array}{c}
+          1/\sqrt{1} \\
+          \vdots \\
+          1/\sqrt{T} \\
+        \end{array}}
+      }_2 \\
+  &amp;=
+  \norm{g_{1:T,i}}_2
+  \sqrt{
+    \sum_{t = 1}^T \frac{1}{t}
+  } \\
+  &amp; \leq
+  \norm{g_{1:T,i}}_2
+  \sqrt{\int_1^T
+    \parentheses{1 + \frac{1}{t}} dt
+  } \\
+  &amp;= \norm{g_{1:T,i}}_2 \sqrt{T - 1 + \log T}
+\end{align*}
+<p>この変更を行っても\(
+  \sqrt{T - 1 + \log T}\) が \(O(\sqrt{T})
+\)なので以降の議論に大きな影響はないはずです（あとできちんと確認します）。とりあえず自分の中ではこれで納得したいと思います。</p>
+</section>
+{% endblock %}

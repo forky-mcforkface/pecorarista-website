@@ -1,0 +1,266 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = '位置エンコーディング' %}
+{% set posted = '2023-03-10' %}
+{% set updated = '2023-04-15' %}
+
+{% block post %}
+<section>
+<p>文中における単語の位置を\(
+  \mathcal{T} =  \{0,\,1,\,\ldots,\,T\}
+\)の元で表す．<strong>位置エンコーディング</strong>とは，多くの場合，写像\(
+  f\colon \mathcal{T} \to \mathbb{R}^D
+\)<span class="head">（\(D\)</span>は正整数）で，
+特に単射であるもの，すなわち
+\begin{align}
+  t \neq t' \; \Rightarrow \; f(t) \neq f(t')
+  \label{uniqueness}
+\end{align}
+を満たすものを指す．さらに実用の観点から，以下を満たしていることが望ましい．</p>
+<ol type="i">
+  <li>有界である．</li>
+  <li>決定的（非確率的）である．</li>
+  <li>文長に依存しない．</li>
+  <li>相対位置が簡潔に表現できる．</li>
+</ol>
+<p><a href="https://papers.nips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">Vaswani et al. 2017</a>では（自分の都合で記法を換えているが）以下のように計算される．まず\(
+  D
+\)を正の偶数に限定する．そして像\(
+  f(t)
+\)の第\(
+  i
+\)成分\(
+  {f(t)}_i
+\)と表すとき，
+\begin{align*}
+{f(t)}_i =
+  \begin{cases}
+    \sin (\omega_{\varphi(i)}\, t) &amp; \text{if \(i \equiv 1 \bmod 2\)}, \\
+    \cos (\omega_{\varphi(i)}\, t) &amp; \text{otherwise} \\
+  \end{cases}
+\end{align*}
+と定める．ここで
+\begin{align*}
+  \varphi(i) = 2 \left\lfloor \frac{i - 1}{2} \right\rfloor,\quad
+  \omega_k
+  =
+  \frac{1}{10000^{
+      \frac{k}{D}
+    }
+  }
+\end{align*}
+である．これは(\(\ref{uniqueness}\))を満たす．なぜならば\(
+  0 \leq \theta \leq 1
+\)の範囲では\(
+  \theta \lt \theta'
+\)ならば\(
+  \sin \theta \lt \sin \theta'
+\)かつ\(
+  \cos \theta \gt \cos \theta'
+\)が成り立つからである．
+また，満たしていることが望ましい性質i.–iii.についても明らかに満たされている．iv.については，後で確認する．</p>
+<strong>例</strong>
+\begin{gather*}
+\varphi(1) = 0,\quad\varphi(2) = 0,\\
+\varphi(3) = 2,\quad\varphi(4) = 2,\\
+\varphi(5) = 4,\quad\varphi(6) = 4,\\
+\varphi(7) = 6,\quad\varphi(8) = 6.
+\end{gather*}
+<p><strong class="simple-header">例</strong>\(
+  D = 128
+\)のとき
+\begin{gather*}
+  f(0) =
+  \begin{pmatrix}
+    \sin (0) \\
+    \cos (0) \\
+    \vdots \\
+    \sin (0) \\
+    \cos (0)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    0 \\
+    1 \\
+    \vdots \\
+    0 \\
+    1
+  \end{pmatrix}
+  ,\\[4pt]
+  f(1) =
+  \begin{pmatrix}
+    \sin (\omega_{\varphi(1)}) \\
+    \cos (\omega_{\varphi(2)}) \\
+    \vdots \\
+    \sin (\omega_{\varphi(127)}) \\
+    \cos (\omega_{\varphi(128)})
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \sin {\frac{1}{10000^{0/128}}} \\
+    \cos {\frac{1}{10000^{0/128}}} \\
+    \vdots \\
+    \sin {\frac{1}{10000^{126/128}}} \\
+    \cos {\frac{1}{10000^{126/128}}} \\
+  \end{pmatrix}
+  \approx
+    \begin{pmatrix}
+      0.8414 \\
+      0.5403 \\
+      \vdots \\
+      0.0001 \\
+      0.9999
+    \end{pmatrix}
+    ,\\[4pt]
+  f(2) =
+  \begin{pmatrix}
+    \sin (\omega_{\varphi(1)} \cdot 2) \\
+    \cos (\omega_{\varphi(2)} \cdot 2) \\
+    \vdots \\
+    \sin (\omega_{\varphi(127)} \cdot 2) \\
+    \cos (\omega_{\varphi(128)} \cdot 2)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \sin {\frac{2}{10000^{0/128}}} \\
+    \cos {\frac{2}{10000^{0/128}}} \\
+    \vdots \\
+    \sin {\frac{2}{10000^{126/128}}} \\
+    \cos {\frac{2}{10000^{126/128}}} \\
+  \end{pmatrix}
+  \approx
+    \begin{pmatrix}
+      0.9092 \\
+      -0.4161 \\
+      \vdots \\
+      0.0002 \\
+      0.9999
+    \end{pmatrix}
+\end{gather*}
+となる．</p>
+<p>各成分ごとに三角関数の周期を変えることで，(\(\ref{uniqueness}\))を簡単に満たすことができる．下の図1と図2を見ると分かるように，\(
+  \sin (\omega\, t)
+\)は\(
+  \omega
+\)が小さくなるほど，周期\(
+  (= 2\pi / \omega)
+\)が大きくなる．
+すなわち，成分を縦に並べたとき，下の方にある成分ほどゆっくり変化する．</p>
+<div class="figure-container">
+  <figure>
+    <figcaption><strong>図1：</strong>\(y = \sin x\)のグラフ．周期は\(2\pi\)．</figcaption>
+    <img src="/static/images/sinx.svg" alt="y = sin x" style="width: 100%; max-width: 1200px;">
+  </figure>
+</div>
+<div class="figure-container">
+  <figure>
+    <figcaption>
+      <strong>図2：</strong>\(\displaystyle y = \sin \frac{1}{2}x\)のグラフ．周期は\(\displaystyle \frac{2\pi }{1 / 2} = 4\pi\)．
+    </figcaption>
+    <img src="/static/images/sin0.5x.svg" alt="y = sin 1/2 x" style="width: 100%; max-width: 1200px;">
+  </figure>
+</div>
+<p>ヒートマップを使って可視化すると図3のようになる．</p>
+<div class="figure-container">
+  <figure>
+    <figcaption>
+      <strong>図 3：</strong>\(D = 128,\,t = 0,\,\ldots,\,50\)のヒートマップ．
+    </figcaption>
+  <img src="/static/images/heatmap.svg" alt="heatmap" style="width: 100%; max-width: 800px; background-color: white;">
+  </figure>
+</div>
+<div class="code-container">
+  <div class="code-header">
+    <div class="code-title">ヒートマップの作成に使用したPythonスクリプト．</div>
+  </div>
+  {% includeSourceCode 'python/pe.py', 'python' %}
+</div>
+<p>最後にiv.について確認する．</p>
+<p>
+<strong>証明</strong>
+\begin{align*}
+  f(t + \varDelta t)
+  &amp;=
+  \begin{pmatrix}
+    \sin (\omega_{\varphi(1)}\, (t + \varDelta t)) \\
+    \cos (\omega_{\varphi(2)}\, (t + \varDelta t)) \\
+    \vdots \\
+    \sin (\omega_{\varphi(D - 1)}\, (t + \varDelta t)) \\
+    \cos (\omega_{\varphi(D)}\, (t + \varDelta t))
+  \end{pmatrix} \\[4pt]
+  &amp;=
+  \begin{pmatrix}
+    \sin (\omega_0 \, t + \omega_0 \, \varDelta t) \\
+    \cos (\omega_0 \, t + \omega_0 \, \varDelta t) \\
+    \vdots \\
+    \sin (\omega_{D/2}\, t + \omega_{D/2}\, \varDelta t) \\
+    \cos (\omega_{D/2}\, t + \omega_{D/2}\, \varDelta t)
+  \end{pmatrix} \\[4pt]
+  &amp;=
+  \begin{pmatrix}
+    \sin (\omega_0\, t) \cos (\omega_0\, \varDelta t) + \cos (\omega_0\, t) \sin (\omega_0\, \varDelta t) \\
+    \cos (\omega_0\, t) \cos (\omega_0\, \varDelta t) - \sin (\omega_0\, t) \sin (\omega_0\, \varDelta t) \\
+    \vdots \\
+    \sin (\omega_{D/2}\, t) \cos (\omega_{D/2}\, \varDelta t) + \cos (\omega_{D/2}\, t) \sin (\omega_{D/2}\, \varDelta t) \\
+    \cos (\omega_{D/2}\, t) \cos (\omega_{D/2}\, \varDelta t) - \sin (\omega_{D/2}\, t) \sin (\omega_{D/2}\, \varDelta t) \\
+  \end{pmatrix} \\[4pt]
+  &amp;=
+  \begin{pmatrix}
+\cos(\omega_0\,\varDelta t)  &amp; \sin(\omega_0\,\varDelta t) &amp; \cdots &amp; 0                      &amp; 0                      \\
+-\sin(\omega_0\,\varDelta t) &amp; \cos(\omega_0\,\varDelta t) &amp; \cdots &amp; 0                      &amp; 0                      \\
+           \vdots   &amp;          \vdots    &amp; \ddots &amp; \vdots                 &amp; \vdots                 \\
+           0        &amp;               0    &amp; \cdots &amp; \cos(\omega_{D/2}\,\varDelta t) &amp; \sin(\omega_{D/2}\,\varDelta t) \\
+           0        &amp;               0    &amp; \cdots &amp; -\sin(_{D/2}\,\varDelta t)      &amp; \cos(\omega_{D/2}\,\varDelta t) \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    \sin (\omega_0\, t) \\
+    \cos (\omega_0\, t) \\
+    \vdots \\
+    \sin (\omega_{D/2}\, t) \\
+    \cos (\omega_{D/2}\, t)
+  \end{pmatrix} \\[4pt]
+  &amp;=
+  A(\varDelta t) f(t).
+\end{align*}
+ここで
+\begin{gather}
+  A(\varDelta t) =
+  \begin{pmatrix}
+    R_0\,(\varDelta t) &amp; O        &amp; \cdots &amp; O            \\
+    O        &amp; R_2\,(\varDelta t) &amp; \cdots &amp; O            \\
+    \vdots   &amp; \vdots   &amp; \ddots &amp; \vdots       \\
+    O        &amp; O        &amp; \cdots &amp; R_{D/2}\,(\varDelta t) \\
+  \end{pmatrix},
+  \notag \\[4pt]
+  R_k(\varDelta t) =
+  \begin{pmatrix}
+    \cos (\omega_k\,\varDelta t) &amp; \sin (\omega_k\,\varDelta t) \\
+    -\sin (\omega_k\,\varDelta t) &amp; \cos (\omega_k\,\varDelta t) \\
+    \end{pmatrix}.
+  \tag*{&#8718;}
+\end{gather}
+</p>
+<p><span class="head">\(
+  R_k (\varDelta t)
+\)</span>は\(
+  \mathbb{R}^2
+\)の要素を\(
+  - \omega_k\, \varDelta t
+\)だけ回転させる線型変換である．この結果を得るために\(
+  \sin,\,
+  \cos
+\)の両方を用い，また\(
+  \omega
+\)の添え字を2個ずつ同じにしているのである．</p>
+</section>
+<section id="materials">
+  <h2>参考文献</h2>
+  <ul>
+  <li><a href="https://papers.nips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">Vaswani et al. (2017). “Attention Is All You Need”. In <em>Advances in Neural Information Processing Systems.</em> Vol. 30.</a></li>
+  <li id="amirhossein-kazemnejad"><a href="https://kazemnejad.com/blog/transformer_architecture_positional_encoding/">Amirhossein Kazemnejad's Blog | <em>Transformer Architecture: The Positional Encoding—Let's use sinusoidal functions to inject the order of words in our model</em></a></li>
+  <li id="kikaben"><a href="https://kikaben.com/transformers-positional-encoding/">KiKaBeN | <em>Transformer’s Positional Encoding: How Does It Know Word Positions Without Recurrence?</em></a></li>
+  <li id="Jonathan-kernes"><a href="https://towardsdatascience.com/master-positional-encoding-part-i-63c05d90a0c3">Towards Data Science | <em>Master Positional Encoding: Part I</em></a></li>
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,62 @@
+\documentclass[12pt,a4paper]{ltjsarticle}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{babel}
+\babelprovide{russian}
+% \babelprovide{polutonikogreek}
+\ltjsetparameter{%
+    jacharrange={%
+        -2, % Exclude Greek and Cyrillic letters.
+        -3  % Punctuations and Miscellaneous symbols.
+    },
+    alxspmode={`/,allow}
+}
+\babelfont[russian]{sf}[Script=Cyrillic]{OpenSans}
+\usepackage{arabluatex}
+\setmainfont[Ligatures=TeX]{Free Serif}
+\setmainjfont[BoldFont={RyuminPro-Regular}]{RyuminPro-Light}
+\newjfontfamily\chinesefont{Hiragino Sans GB}
+\newfontfamily\phonetic{Doulos SIL}
+\newfontfamily\translitfont{Free Serif}
+\newfontfamily\arabicfont[%
+    Script=Arabic,     % enable ligatures
+    RawFeature={%
+        +anum,         % use eastern arabic numerals
+        +ss05}        % put kasrah below shadda
+]{Scheherazade-Bold}
+\SetTranslitFont{\translitfont}
+\SetTranslitStyle{\upshape}  % \upshape, \itshape
+\SetTranslitConvention{dmg}  % dmg, loc, arabica
+\newcommand\tightlist{\relax}
+\newcommand\ArabicWord[1]{\mbox{\arb[novoc]{#1}} \arb[trans]{#1}}
+\newcommand\ChineseWord[1]{\begin{chinesefont}#1\end{chinesefont}}
+\newcommand\RussianWord[1]{\foreignlanguage{russian}{\textsf{#1}}}
+\pagestyle{empty}
+\begin{document}
+  \begin{itemize}
+  \tightlist
+  \item
+    \ChineseWord{狐狸} húli {\phonetic /xʷuu˥lʲii/} 狐
+  \item
+    \ChineseWord{春节} chūnjié {\phonetic /ʈʂʰʷən˥tɕee˧˥/} 春節
+  \item
+    \ChineseWord{近日} jìnrì {\phonetic /tɕin˥˩ʐʐʐ˥˩/} このごろ
+  \item
+    \RussianWord{убивать} {\phonetic /ʊbʲɪˈvatʲ/} \textsc{impf}
+    \textsc{{[}+ acc{]}} 殺す
+  \item
+    \RussianWord{воздух} {\phonetic /ˈvozdʊx/} \textsc{m} 大気
+  \item
+    \ArabicWord{rI.huN} \textsc{f} 風
+  \item
+    \ArabicWord{^samAluN} \textsc{m} 北
+  
+    \begin{itemize}
+    \tightlist
+    \item
+      \ArabicWord{rI.hu 'l-^samAli} 北風
+    \end{itemize}
+  \item
+    \ArabicWord{tatajAdalu} (\arb[novoc]{fI} + etw.) bestreiten
+    \textsc{3sg f impf} ← \ArabicWord{tajadala}
+  \end{itemize}
+\end{document}

@@ -1,0 +1,30 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "document_analyzer": {
+          "type": "custom",
+          "tokenizer": "kuromoji_tokenizer"
+        }
+      }
+    }
+  },
+  "mappings":{
+    "properties": {
+      "uri": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "keyword"
+      },
+      "retrieved": {
+        "type": "date",
+        "format": "epoch_second"
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "document_analyzer"
+      }
+    }
+  }
+}

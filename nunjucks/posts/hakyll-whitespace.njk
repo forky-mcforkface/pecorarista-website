@@ -1,0 +1,34 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set lang = 'ja' %}
+{% set title = 'Hakyllで日本語文中の余分な空白を削除する' %}
+{% set posted = '2016-09-18' %}
+
+{% block post %}
+<section>
+  <p>静的サイト作成ツールHakyllで日本語を含むページを作成したとき、以下の図の反転部分のように余分な空白が入ってしまうことがあります。</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <img src="https://qiita-image-store.s3.amazonaws.com/0/55753/0f06f4a1-4500-a22e-e445-f4df7999b511.png" alt="Hakyllによって生成された、余分な空白を含むページ" style="max-width: 500px;">
+    </figure>
+  </div>
+  <p>これは内部で動いている<a href="http://pandoc.org/">Pandoc</a>が、Markdownファイルに含まれている改行文字を空白文字に変換するために起こります。</p>
+  <div class="code-container no-header">
+    {% includeSourceCode 'latex/hakyll.md', 'markdown' %}
+  </div>
+  <p>このような挙動を望まないユーザーのために<a href="http://pandoc.org/releases.html#pandoc-1.16.0.1-10-jan-2016">1.16.0.1</a>から<code>east_asian_line_breaks</code>という拡張が加えられています。以下でその使い方を説明します。</p>
+  <p>まず上記の拡張を使うため<code>&lt;project_name&gt;.cabal</code>で使用する<code>pandoc</code>のバージョンが1.16.0.1以降になるようにしてください。また以下で示すコードにおいて集合の演算を使うため、それをそのまま使う場合は<code>&lt;project_name&gt;.cabal</code>の依存関係に<code>containers</code>も追加してください。</p>
+  <p>依存関係の設定が終わったら、以下のように<code>site.hs</code>を変更します。</p>
+  <div class="code-container">
+    <div class="code-header"><span class="filename">site.hs</span></div>
+    {% includeSourceCode 'latex/hakyll.hs', 'haskell' %}
+  </div>
+  <p>今回追加する<code>Ext_east_asian_line_breaks</code>は<code>writerExtensions</code>ではなく<code>readerExtensions</code>に追加するようです。その後、この<code>customPandocCompiler</code>で<code>pandocCompiler</code>を置き換え、<code>stack build</code>してください。</p>
+  <p>最後に<code>exec site clean</code>, <code>stack exec site watch</code>で出来上がりを確認して終わりです。</p>
+  <div class="figure-container no-caption">
+    <figure>
+      <img src="http://qiita-image-store.s3.amazonaws.com/0/55753/6280be48-41fb-3b98-ea9f-47bce8de0fda.png" alt="Hakyllによって生成された、余分な空白を含まないページ" style="max-width: 500px;">
+    </figure>
+  </div>
+</section>
+{% endblock %}

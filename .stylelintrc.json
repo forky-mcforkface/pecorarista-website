@@ -1,0 +1,16 @@
+{
+  "plugins": [
+    "stylelint-order"
+  ],
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recess-order"
+  ],
+  "rules": {
+    "font-family-name-quotes": "always-unless-keyword",
+    "string-quotes": "single",
+    "order/properties-alphabetical-order": null,
+    "scss/at-if-no-null": null,
+    "scss/double-slash-comment-empty-line-before": "never"
+  }
+}

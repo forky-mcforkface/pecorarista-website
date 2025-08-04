@@ -1,0 +1,435 @@
+@use 'variables';
+@use 'collapsible';
+@use 'lang';
+@use 'lists';
+@use 'navbar';
+@use 'toc';
+
+@font-face {
+  font-family: 'mathematical';
+  src: url('/static/fonts/MathJax_Main-Regular.otf') format('opentype');
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  font-family: variables.$latin-font, variables.$jp-font, sans-serif;
+  font-size: 1.1rem;
+  font-weight: normal;
+  font-feature-settings: 'kern' 1, 'liga' 0, 'palt' 1;
+  font-variant-ligatures: none;
+  // background-color: variables.$white-smoke;
+  background-color: variables.$white;
+  text-autospace: normal;
+}
+
+em {
+  font-family: variables.$latin-font, sans-serif;
+  font-style: oblique;
+
+  &.italic {
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  &.title {
+    font-style: italic;
+    font-weight: normal;
+  }
+}
+
+.wrapper {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-bottom: variables.$footer-height;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: variables.$footer-height;
+  color: variables.$white;
+  background-color: variables.$gray;
+}
+
+.footer {
+  padding-top: 23px;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.bottom-element {
+  padding-bottom: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 1.9rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+section {
+  padding-bottom: 30px;
+
+  section {
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+}
+
+code {
+  font-family: variables.$mono-font, monospace;
+  color: variables.$code-background;  // TODO
+}
+
+.filename {
+  font-family: variables.$mono-font, monospace;
+}
+
+td.monospace {
+  font-family: variables.$mono-font, monospace;
+}
+
+.code-container {
+  padding: 0 0 20px;
+  text-align: center;
+
+  .code-header {
+    margin: 0;
+  }
+
+  pre.shiki {
+    display: block;
+    max-width: 800px;
+    max-height: 1200px;
+    padding: 1.5rem;
+    margin: 16px auto;
+    overflow-x: auto;
+    font-family: variables.$mono-font, monospace;
+    color: variables.$code-body;
+    text-align: left;
+    background: variables.$code-background;
+    border-radius: 8px;
+  }
+
+  &.no-header {
+    .code-header {
+      display: none;
+    }
+
+    pre.shiki {
+      margin-top: 2rem;
+    }
+  }
+}
+
+.figure-container {
+  padding: 0 0 20px;
+  text-align: center;
+  background-color: transparent;
+
+  figure {
+    display: block;
+    margin: 0;
+
+    img,
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 16px auto;
+    }
+
+    figcaption {
+      max-width: 100%;
+      margin: 0;
+      text-align: center;
+
+      .caption-inner {
+        display: inline-block;
+        max-width: 100%;
+        text-align: left;
+      }
+    }
+  }
+
+  &.no-caption {
+    figure {
+      figcaption {
+        display: none;
+      }
+
+      img {
+        margin-top: 2rem;
+      }
+    }
+  }
+}
+
+ul.profile {
+  padding: 15px 0;
+
+  li {
+    display: inline-block;
+    text-align: center;
+
+    i {
+      padding: 5px;
+    }
+  }
+}
+
+ol.citation {
+  counter-reset: n;
+
+  li {
+    position: relative;
+    list-style: none;
+
+    &::before {
+      position: absolute;
+      left: -2.1rem;
+      content: '[' counter(n) ']';
+      counter-increment: n;
+    }
+  }
+}
+
+.math {
+  &item {
+    font-family: 'mathematical', serif;
+    font-size: 119.5%;
+    font-feature-settings: 'palt';
+  }
+
+  &-keyword {
+    font-weight: bold;
+  }
+
+  &-book {
+    padding-bottom: 0;
+
+    a {
+      color: variables.$black;
+    }
+
+    cite {
+      margin-right: 0.5rem;
+
+      &:lang(en) {
+        font-family: variables.$latin-font, sans-serif;
+        font-style: oblique;
+      }
+
+      &:lang(ja) {
+        font-style: normal;
+      }
+    }
+
+    i.fa-bookmark {
+      margin-right: 0.25rem;
+      color: variables.$denim;
+    }
+  }
+}
+
+ol.math {
+  padding-left: 1rem;
+  margin-bottom: 0;
+  counter-reset: m;
+
+  li {
+    position: relative;
+    margin: 1.8ex;
+    list-style: none;
+
+    &::before {
+      position: relative;
+      padding-right: 1rem;
+      font-family: 'mathematical', serif;
+      font-size: 119.5%;
+      // content: '(' counter(m) ')';
+      counter-increment: m;
+    }
+
+    &.s::before { content: '(s' counter(m) ')'; }
+    &.p::before { content: '(p' counter(m) ')'; }
+    &.d::before { content: '(d' counter(m) ')'; }
+    &.parentheses::before { content: '(' counter(m) ')'; }
+    &.prime::before { content: '(' counter(m) 'ʹ)'; }
+    &.capc::before { content: '(C' counter(m) ')'; }
+    &.lower-roman::before { content: '(' counter(m, lower-roman) ')'; }
+    &.upper-roman::before { content: '(' counter(m, upper-roman) ')'; }
+  }
+}
+
+th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.interlinear-gloss {
+  padding-bottom: 25px;
+
+  p {
+    margin: 0.75rem 0;
+  }
+
+  table {
+    width: auto;
+    padding: 0;
+    margin: 0;
+    table-layout: auto;
+
+    caption {
+      text-align: left;
+      caption-side: top;
+    }
+
+    tr {
+      line-height: 1.1;
+
+      th {
+        padding-left: 0;
+        text-align: left;
+      }
+
+      td[dir='rtl'] {
+        text-align: right;
+      }
+    }
+  }
+}
+
+ol.narrow {
+  li {
+    margin-top: 0.5ex;
+    margin-bottom: 0.5ex;
+  }
+}
+
+figcaption.blockquote-footer {
+  &::before {
+    content: '';
+  }
+
+  font-size: 100%;
+  color: inherit;
+  text-align: right;
+}
+
+main {
+  height: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.uri {
+  font-family: variables.$mono-font, monospace;
+  word-break: break-all;
+}
+
+.info {
+  padding-bottom: 9ex;
+}
+
+kbd {
+  font-size: 85%;
+  color: variables.$code-body;
+  background-color: variables.$code-background;
+  border-radius: 3px;
+}
+
+.lig {
+  margin-right: 0.1em;
+  letter-spacing: -0.1em;
+}
+
+.widespace {
+  letter-spacing: 0.2rem;
+}
+
+h3.math,
+h4.math,
+h5.math {
+  font-weight: bold;
+}
+
+.statement {
+  width: 100%;
+  padding: 18px;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+blockquote.quotation {
+  position: relative;
+  padding: 1rem 3.3rem 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 8px solid variables.$gray;
+
+  &::before {
+    position: absolute;
+    top: -18px;
+    right: auto;
+    left: 10px;
+    font-family: variables.$ipa-font, serif;
+    font-size: 4rem;
+    color: variables.$gray;
+    content: '“';
+  }
+
+  &.right-bar {
+    text-align: right;
+    border-right: 8px solid variables.$gray;
+    border-left: none;
+
+    &::before {
+      right: 10px;
+      left: auto;
+      content: '”';
+    }
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.me {
+  text-decoration: underline;
+}
+
+.bib {
+  text-indent: 0;
+}
+
+.simple-header {
+  margin-right: 0.5rem;
+}

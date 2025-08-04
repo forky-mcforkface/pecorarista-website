@@ -1,0 +1,137 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = 'Windows Terminalの背景を透明にして動画を流す方法' %}
+{% set posted = '2022-09-23' %}
+
+{% block post %}
+<section>
+<p>基本的には<a href="https://github.com/microsoft/terminal/issues/14059">microsoft/terminal/issues/14059</a>に書いたことと同じなのですが、日本語で情報が見つからなかったので、日本語でも書いておきたいと思います。</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>
+        ターミナルの背後で動画<a href="https://www.youtube.com/watch?v=qZP0l-mZvqY">
+          <i class="fa-brands fa-youtube"></i>
+          <span class="sr-only">YouTubeで動画を見る</span>
+        </a>を再生している様子。
+      </figcaption>
+      <video
+        src="/static/videos/windows-terminal-transparent-video.mp4"
+        alt="Video being played behind a transparent terminal"
+        style="max-width: 800px;"
+        loop
+        muted
+      ></video>
+    </figure>
+  </div>
+<div class="toc-container">
+<h4 class="toc-title">目次</h4>
+<ol>
+  <li><a href="#terminal">Windows Terminal側の設定</a></li>
+  <li><a href="#browser">ブラウザ側の設定</a>
+  <ol>
+    <li><a href="#chrome"><i class="fa-brands fa-chrome"></i> Google Chromeの場合</a></li>
+    <li><a href="#firefox"><i class="fa-brands fa-firefox-browser"></i> Firefoxの場合</a></li>
+  </ol>
+</li>
+</ol>
+</div>
+</section>
+
+<section>
+<h2 id="terminal">Windows Terminal側の設定</h2>
+<p>Windows Terminal画面のタイトルバーを右クリックし
+<strong>Settings</strong>を選択します。画面左側の<strong>Profiles</strong>の一覧の中から、変更したい項目、例えば
+<strong><i class="fa fa-linux" aria-hidden="true"></i> Ubuntu-20.04</strong>を選択します。</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/profiles.png"
+      style="max-width: 331px;"
+      alt="Windows Terminal; Profiles"
+    >
+  </figure>
+</div>
+<p>画面右側に設定項目の一覧が表示されるので、その中の<strong>Additional settings &gt; Appearance</strong>を選択します。</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/additional-settings.png"
+      style="max-width: 625px;"
+      alt="Windows Terminal; Additional settings"
+    >
+  </figure>
+</div>
+<strong>Transparency</strong>の<strong>Background opacity</strong>（不透明度）を80%程度に設定します。
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/transparency.png"
+      style="max-width: 625px;"
+      alt="Windows Terminal; Transparency"
+    >
+  </figure>
+</div>
+右下の<strong>Save</strong>を押して変更を確定します。
+</section>
+
+<section>
+<h2 id="browser">ブラウザ側の設定</h2>
+<p>上記の設定でターミナルの背景は透明になりますが、ある問題が生じます。それはブラウザのCPUやメモリを節約しようとする仕組みによって、<span style="text-decoration: underline;">Windows Terminalを全画面にしたときにブラウザの画面が描画されない</span>という問題です。例えば、背景で動画を再生しようすると動画が真っ黒になってしまったり、Webアプリケーションのコードを変更した結果をプレビューしようとすると文字が消えてしまったりします。</p>
+<p>上記のブラウザの挙動はごく一部の人以外には望ましい挙動であり、今後修正されることはおそらくないでしょう。したがってこの問題は自分でWebブラウザの設定を変更して解決する必要があります。以下にその手順を示します。</p>
+
+<section>
+<h3 id="chrome"><i class="fa-brands fa-chrome"></i> Google Chromeの場合</h3>
+<p>アドレスバーに<code>chrome://flags/#calculate-native-win-occlusion</code>と入力して、設定画面の<strong>Calculate window occlusion on Windows</strong>の項目を<code>Disabled</code>に設定します。
+</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/chrome.png"
+      style="max-width: 735px;"
+      alt="Google Chrome; Calculate window occlusion on Windows"
+    >
+  </figure>
+</div>
+<p><cite lang="en">Reference: <a href="https://support.google.com/chrome/thread/77201393/videos-turn-black-when-a-full-screen-window-is-on-top-of-the-window-playing-the-video">Videos turn black when a full screen window is “on top” of the window playing the video.</a></cite></p>
+</section>
+
+<section>
+<h3 id="firefox"><i class="fa-brands fa-firefox-browser"></i> Firefoxの場合</h3>
+<p>アドレスバーに<code>about:config</code>と入力します。警告が出る場合がありますが、設定を変更したいので
+<strong>Accept the Risk and Continue</strong>を選択します。
+</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/caution.png"
+      style="max-width: 658px;"
+      alt="Firefox; Proceed with Caution"
+    >
+  </figure>
+</div>
+<p>次の画面では設定を変更したい項目の名前を検索する欄が表示されるので、そこに<code>widget.windows.window_occlusion_tracking.enabled</code>と打ち込みます。</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/preference.png"
+      style="max-width: 645px;"
+      alt="Firefox; Search preference name"
+    >
+  </figure>
+</div>
+<p>双方向の矢印のアイコンをクリックして値を<code>false</code>に変更します。</p>
+<div class="figure-container no-caption">
+  <figure>
+    <img
+      src="/static/images/toggle.png"
+      style="max-width: 907px;"
+      alt="Firefox; Toggle the parameter"
+    >
+  </figure>
+</div>
+<p><cite lang="en">Reference: <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1759393">Firefox stops rendering videos (the whole web-page) after 10 seconds when in background</a></cite></p>
+</section>
+
+</section>
+{% endblock %}

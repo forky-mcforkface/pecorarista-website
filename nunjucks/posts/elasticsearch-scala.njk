@@ -1,0 +1,106 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set lang = 'ja' %}
+{% set title = 'ScalaでElasticsearchを使う(elastic4s)' %}
+{% set posted = '2019-11-27' %}
+
+{% block post %}
+<section>
+  <p>ScalaでElasticsearchを扱うライブラリ<a href="https://github.com/sksamuel/elastic4s">elastic4s</a>について、比較的古めの情報しか見つからなかったので、使い方をまとめておきます。HTTPのAPIを提供するサーバーを作るコードを使って解説していきます。完全なコードは<a href="https://github.com/pecorarista/elastic4s-example">pecorarista/elastic4s-example</a>を参照してください。</p>
+  <p>elastic4sを使う理由ですが<a href="https://doc.akka.io/docs/alpakka/current/elasticsearch.html">Alpakka
+    Elasticsearch</a>と違い、日本語の文字を使ったクエリに対応できていたからです。ただAlpakka Elasticsearchに<a href="https://github.com/akka/alpakka/pull/2008">PRを出したところマージされた</a>ので、今後のリリースでは解消されると思います。<strong>elastic4sとAlpakka
+    Elasticsearchの違いとしては前者がDSLを使ってクエリを作る</strong>ことが挙げられます。ここらへんは好みが分かれるところだと思いますが、個人的にはDSLを使う方が好きなのでelastic4sを使うことにしてよかったです。</p>
+</section>
+<section>
+  <h2>Elasticsearchの準備</h2>
+  <p><strong>elastic4sのバージョンと整合性をとる必要がある</strong>ため、今回は7.3.2をインストールします。インストール方法についてはよい解説がたくさんあるため、ここでは特に説明しません。</p>
+  <p>今回使うデータの仕様を定義した<code>index.json</code>を準備します。<code>retrieved</code>（取得日時）はUNIX Timeを表す整数です。</p>
+<div class="code-container">
+  <div class="code-header"><span class="filename">index.json</span></div>
+  {% includeSourceCode 'codes/index.json', 'json' %}
+</div>
+  <p>これを使用してインデックスを作成します。</p>
+  <div class="code-container no-header">
+    {% includeSourceCode 'codes/es-curl.sh', 'shell' %}
+  </div>
+  <p>次に登録するデータを準備します。ここでは<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.3/docs-bulk.html">bulk API</a>を使うので、以下のような形式のファイルを作成します。</p>
+  <div class="code-container">
+    <div class="code-header"><span class="filename">data.jsonl</span></div>
+    {% includeSourceCode 'codes/data.jsonl', 'jsonl' %}
+  </div>
+<p>これを以下のコマンドでElasticsearchに送ります。</p>
+  <div class="code-container no-header">
+    {% includeSourceCode 'codes/es-curl2.sh', 'shell' %}
+  </div>
+</section>
+<section>
+<h2>依存関係の定義</h2>
+<p><a href="https://github.com/sksamuel/elastic4s">elastic4sのREADME</a>を参考にbuild.sbtを編集します。今回はHTTPサーバーの機能を使うので<a href="https://doc.akka.io/docs/akka-http/current/introduction.html">Akka HTTP</a>の関連するライブラリも依存関係に含めます。このとき<strong>elastic4sのメジャーバージョン・マイナーバージョンがElasticsearchのそれと一致するように気をつけてください。</strong>
+  </p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">build.sbt</span>
+      {% includeSourceCode 'codes/es-build.sbt', 'scala' %}
+    </div>
+  </div>
+</section>
+<section>
+  <h2>Scalaでのデータ型の定義</h2>
+  <p>まずは型クラス(case class)を定義します。今回はGETリクエストによる検索と、POSTリクエストによる更新のみの単純なAPIを作るので、以下の2つの型クラスを定義すれば十分です。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">src/main/scala/${organization}/${app}/ApplicationTypes.scala</span>
+    </div>
+    {% includeSourceCode 'codes/es-ApplicationTypes.scala', 'scala' %}
+  </div>
+  <p>次にJSONをScalaの型クラスに変換する方法を定義します。elastic4sは以下のライブラリをサポートしているので好きなものを使ってください。今回はSpray Jsonを使います。これはAkka HTTPがSpray Jsonをサポートしているため、自分でコードを書く量が減らせるからです。</p>
+  <ul>
+    <li>Jackson</li>
+    <li>Circe</li>
+    <li>Json4s</li>
+    <li>PlayJson</li>
+    <li>Spray Json</li>
+  </ul>
+  <p>今回はJSONとScalaにおける型が1対1で対応するため、<code>jsonFormatN</code>を指定するだけで自動的に変換規則が生成されます。<code>jsonFormatN</code>の<code>N</code>は型クラスのフィールド数に合わせる必要があります。</p>
+<div class="code-container">
+  <div class="code-header">
+    <span class="filename">src/main/scala/${organization}/${app}/JsonProtocol.scala</span>
+  </div>
+  {% includeSourceCode 'codes/JsonProtocol.scala', 'scala' %}
+</div>
+</section>
+<section>
+  <h2>クエリの組み立て方</h2>
+  <p>elastic4sのドキュメントはやや古くなっている箇所が多いので<a href="https://github.com/sksamuel/elastic4s/tree/master/elastic4s-core/src/main/scala/com/sksamuel/elastic4s/requests/searches/queries">elastic4s/src/main/scala/com/requests/searches/queries</a>のあたりを参考にしながら書くとよいと思います。</p>
+<div class="code-container">
+  <div class="code-header">
+    <span class="filename">src/main/scala/${organization}/${app}/Route.scala</span>
+  </div>
+  {% includeSourceCode 'codes/Route.scala', 'scala' %}
+</div>
+</section>
+<section>
+  <h2>ルーティング規則の定義</h2>
+  <p><a href="https://doc.akka.io/docs/akka-http/current/index.html">Akka HTTP</a>のドキュメントを参考に、ルーティング規則を書いていきます。またAPIを提供するとき<a href="https://developer.mozilla.org/ja/docs/Web/HTTP/CORS">オリジン間リソース共有 (CORS)</a>について制御する必要が生じると思うので、<code>cors()</code>を呼んでいます。今回の範囲では特に必要ではないので省いても大丈夫です。</p>
+  <div class="code-container">
+    <div class="code-header">
+      <span class="filename">src/main/scala/${organization}/${app}/Route.scala</span>
+    </div>
+    {% includeSourceCode 'codes/Route2.scala', 'scala' %}
+  </div>
+</section>
+<section>
+  <h2>実行</h2>
+  <p>サーバーを起動するため、実行可能なオブジェクトを作成します</p>
+<div class="code-container">
+  <div class="code-header">
+    <span class="filename">src/main/scala/${organization}/${app}/Main.scala</span>
+  </div>
+  {% includeSourceCode 'codes/Main.scala', 'scala' %}
+</div>
+  <p>Scala側でサーバーを起動する前に、Elasticsearchが9200番のポートでアクセス可能なことを確認します。それができたら<code>sbt</code>コマンドで対話環境に入り、<code>run</code>と打ってHTTPサーバーを起動します。ここまでできたら、ブラウザのアドレスバーに<code>http://localhost:8080/documents?term=...</code>（<code>...</code>の部分は好きな文字列）と入力すると、検索結果が返ってくるはずです（termクエリなので単語の分かち書きを考慮した検索になっていることに注意してください。）。また更新については以下のようなPOSTリクエストを投げると“Success!”と帰ってくるはずです。もう一度検索し、タイトルが更新されていることを確認してみてください。</p>
+<div class="code-container no-header">
+  {% includeSourceCode 'codes/es-curl3.sh', 'shell' %}
+</div>
+</section>
+{% endblock %}

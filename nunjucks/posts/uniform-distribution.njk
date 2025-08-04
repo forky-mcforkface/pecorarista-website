@@ -1,0 +1,102 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = '一様分布の期待値と分散' %}
+{% set posted = '2022-09-22' %}
+{% set updated = '2022-09-24' %}
+
+{% block post %}
+<section>
+<p>Lebesgue積分を定義通りに計算することがなかったので（する必要はないが），一様分布の期待値と分散を題材に計算してみる．</p>
+<p>確率空間\(
+  (\varOmega,\, \mathcal{F},\, P)
+\)で考える．確率変数\(
+  X\colon \varOmega \to \mathbb{R}
+\)が一様分布\(
+  \mathcal{U}(0,\,1)
+\)に従うとは，\(
+  X
+\)の分布関数\(
+  F \colon \mathbb{R} \to [0,\,1]
+\)が以下で与えられることである：
+\begin{align*}
+  F(x) :=
+  P(\{\omega \in \varOmega \mid X(\omega) \leq x\}) =
+  \begin{cases}
+    0 &amp; \text{if \(x \in (-\infty,\, 0),\)} \\[3pt]
+    x &amp; \text{if \(x \in [0,\, 1),\)} \\[3pt]
+    1 &amp; \text{if \(x \in [1,\, \infty).\)} \\
+  \end{cases}
+\end{align*}
+<span class="head">\(F\)</span>の密度関数\(f\)は
+\begin{align*}
+  f(x) =
+  \begin{cases}
+    1 &amp; \text{if \(x \in [0,\, 1),\)} \\[3pt]
+    0 &amp; \text{otherwise.} \\
+  \end{cases}
+\end{align*}
+<span class="head">\(X\)</span>の期待値は
+\begin{align*}
+  E[X]
+  &amp;= \int_{\varOmega} X(\omega) P(d\omega) \\
+  &amp;= \int_{0}^{1} x f(x) dx \\
+  &amp;= \lim_{n \to \infty} \sum_{k = 1}^{2^n}
+  \frac{k - 1}{2^n} P
+    \left(
+      \left\{
+      \omega \in \varOmega \;\middle|\;
+        X(\omega) \in
+        \left[
+          \frac{k - 1}{2^n},\,\frac{k}{2^n}
+        \right)
+      \right\}
+    \right) \\
+  &amp;= \lim_{n \to \infty} \frac{1}{2^n} \cdot \frac{2^n}{2} \cdot ({0 + 2^n - 1}) \cdot \frac{1}{2^n} \\
+  &amp;= \lim_{n \to \infty} \frac{1}{2} \cdot \parentheses{1 - \frac{1}{2^n}} \\
+  &amp;= \frac{1}{2}.
+\end{align*}
+<span class="head">\(X\)</span>の分散は
+\begin{align*}
+  V[X]
+  &amp;= E[X^2] - (E[X])^2 \\
+  &amp;= \int_{0}^1 x^2 f(x) dx - \frac{1}{4} \\
+  &amp;= \lim_{n \to \infty} \sum_{k = 1}^{2^n}
+  \parentheses{\frac{k - 1}{2^{n}}}^2 P
+    \left(
+      \left\{
+      \omega \in \varOmega \;\middle|\;
+        X(\omega) \in
+        \left[
+          \parentheses{\frac{k - 1}{2^n}}^2,\,\parentheses{\frac{k}{2^n}}^2
+        \right)
+      \right\}
+    \right)
+    - \frac{1}{4}
+    \\
+  &amp;= \lim_{n \to \infty} \sum_{k = 1}^{2^n}
+  \frac{(k - 1)^2}{2^{2n}} \cdot \frac{1}{2^n} - \frac{1}{4} \\
+  &amp;= \lim_{n \to \infty} \frac{1}{2^{3n}} \cdot \frac{1}{6} \cdot (2^n - 1) \cdot 2^n \cdot (2 \cdot 2^n - 1) - \frac{1}{4} \\
+  &amp;= \lim_{n \to \infty} \frac{1}{6\cdot 2^{3n}} \cdot \parentheses{2 \cdot 2^{3n} - 3 \cdot 2^{2n} + 2^n } - \frac{1}{4} \\
+  &amp;= \frac{1}{12}.
+\end{align*}
+</p>
+<p>一般に確率変数\(X'\)が一様分布\(\mathcal{U}(a,\,b)\)にしたがうとき，\(
+  X \sim \mathcal{U}(0,\, 1)
+\)を用いて\(
+  X' = (b - a) X + a
+\)と表すことができるから，期待値と分散はそれぞれ
+\begin{align*}
+  E[X'] &amp;= E[(b - a)X + a] \\
+        &amp;= \frac{b - a}{2}\cdot E[X] + a \\
+        &amp;= \frac{a + b}{2},
+\end{align*}
+\begin{align*}
+  V[X'] &amp;= V[(b - a)X + a] \\
+        &amp;= (b - a)^2 \cdot V[X] \\
+        &amp;=\frac{(b - a)^2}{12}
+\end{align*}
+と計算できる．
+</p>
+</section>
+{% endblock %}

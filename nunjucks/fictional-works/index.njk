@@ -1,0 +1,55 @@
+{% extends 'nunjucks/_layout/_layout.njk' %}
+{% set lang = 'ja' %}
+{% set title = '創作' %}
+
+{% block content %}
+<article>
+  <h1>オリジナルキャラクター</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="twinkle">
+        <li>名前：天奈レティア (Amana Lethia)
+          <ul>
+            <li><a href="name-origin">名前の由来</a>
+              <ul>
+                <li>
+                  <a href="lilith-and-naama">ナアマとはどのような悪魔か？&nbsp;～ゾーハルの<em>Lilit and Na'amah</em>を読む～</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>種族：サキュバス（元は人間）</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <div class="figure-container">
+        <figure>
+          <figcaption>
+            設定画
+          </figcaption>
+          <a href="/static/images/amana-lethia-material-v1.png">
+            <img src="/static/images/amana-lethia-material-v1.png" alt="天奈レティア設定画">
+          </a>
+        </figure>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="figure-container">
+        <figure>
+          <figcaption>
+            <div class="caption-inner">
+              ロゴ。ベースは欧文大文字が<a href="https://www.myfonts.com/products/shelley-andante-script-shelley-script-982661">Shelley Script</a>のVolante字形、小文字が<a href="https://www.myfonts.com/collections/melody-font-paratype">Melody</a>、和文が<a href="https://fontworks.co.jp/fontsearch/SkipStd-M/">スキップ M</a>です。
+            </div>
+          </figcaption>
+          <a href="/static/images/character-logo.svg">
+            <img src="/static/images/character-logo.svg" alt="天奈レティアロゴ" style="max-width: 800px;">
+          </a>
+        </figure>
+      </div>
+    </div>
+  </div>
+</article>
+{% endblock %}

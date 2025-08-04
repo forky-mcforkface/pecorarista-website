@@ -1,0 +1,36 @@
+\documentclass[12pt,a4paper]{ltjsarticle}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{babel}
+\babelprovide{russian}
+% \babelprovide{polutonikogreek}
+\ltjsetparameter{%
+    jacharrange={%
+        -2, % Exclude Greek and Cyrillic letters.
+        -3  % Punctuations and Miscellaneous symbols.
+    },
+    alxspmode={`/,allow}
+}
+\babelfont[russian]{sf}[Script=Cyrillic]{OpenSans}
+\usepackage{arabluatex}
+\setmainfont[Ligatures=TeX]{Free Serif}
+\setmainjfont[BoldFont={RyuminPro-Regular}]{RyuminPro-Light}
+\newjfontfamily\chinesefont{Hiragino Sans GB}
+\newfontfamily\phonetic{Doulos SIL}
+\newfontfamily\translitfont{Free Serif}
+\newfontfamily\arabicfont[%
+    Script=Arabic,     % enable ligatures
+    RawFeature={%
+        +anum,         % use eastern arabic numerals
+        +ss05}        % put kasrah below shadda
+]{Scheherazade-Bold}
+\SetTranslitFont{\translitfont}
+\SetTranslitStyle{\upshape}  % \upshape, \itshape
+\SetTranslitConvention{dmg}  % dmg, loc, arabica
+\newcommand\tightlist{\relax}
+\newcommand\ArabicWord[1]{\mbox{\arb[novoc]{#1}} \arb[trans]{#1}}
+\newcommand\ChineseWord[1]{\begin{chinesefont}#1\end{chinesefont}}
+\newcommand\RussianWord[1]{\foreignlanguage{russian}{\textsf{#1}}}
+\pagestyle{empty}
+\begin{document}
+  $body$
+\end{document}

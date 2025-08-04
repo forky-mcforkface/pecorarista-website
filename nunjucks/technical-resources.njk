@@ -1,0 +1,86 @@
+{% extends 'nunjucks/_layout/_layout.njk' %}
+{% set lang = 'ja' %}
+{% set title = '技術的な記事や資料' %}
+
+{% block content %}
+<article>
+  <div class="row">
+    <div class="col-12">
+      <h3>論文のコード</h3>
+      <ul>
+        <li><a href="https://github.com/pecorarista/metaphor-evaluation-result">自動生成されたメタファー表現の評価結果</a><a href="https://aclanthology.info/papers/W17-6929/w17-6929"><span>(Miyazawa and Miyao, 2017)</span></a></li>
+        <li><a href="https://github.com/aistairc/market-reporter">Market Reporter</a> <a href="https://aclanthology.info/papers/P17-1126/p17-1126">(Murakami et al., 2017;</a> <a href="https://aclanthology.info/papers/W18-6515/w18-6515">Aoki et al., 2018)</a></li>
+      </ul>
+      <h3>雑記</h3>
+      <ul>
+        <li>Stone&ndash;Weierstraßの定理
+          <a href="/static/docs/stone-weierstrass.pdf">
+            <i class="fa-regular fa-file-pdf"></i>
+            <span class="sr-only">PDF</span>
+          </a>
+          <a href="https://github.com/pecorarista/stone-weierstrass">
+            <i aria-hidden="true" class="fa-brands fa-github" title="GitHub"></i>
+            <span class="sr-only">GitHub</span>
+          </a>
+        </li>
+        <li>地球上の2地点間の距離の求め方
+          <a href="/static/docs/shortest-path-on-a-sphere.pdf">
+            <i class="fa-regular fa-file-pdf"></i>
+            <span class="sr-only">PDF</span>
+          </a>
+          <a href="https://github.com/pecorarista/shortest-path-on-a-sphere">
+            <i aria-hidden="true" class="fa-brands fa-github" title="GitHub"></i>
+            <span class="sr-only">GitHub</span>
+          </a>
+        </li>
+        <li><a href="/posts/pca">主成分分析(Principal Component Analysis, PCA)</a></li>
+        <li><a href="/posts/pi-system-and-lambda-system">&pi;-systemと&lambda;-system</a></li>
+        <li><a href="/posts/positional-encoding">位置エンコーディング</a></li>
+        <li><a href="/posts/backpropagation">Calculating Backpropagation Using Fréchet Derivatives</a></li>
+        <li><a href="/posts/frechet">Solving Linear Regression Problems Using Fréchet Derivatives</a></li>
+        <li><a href="/posts/nn-init">ニューラルネットの線型層の初期化</a></li>
+        <li><a href="/posts/windows-terminal-transparent">Windows Terminalの背景を透明にして動画を流す方法</a></li>
+        <li><a href="/posts/uniform-distribution">一様分布の期待値と分散</a></li>
+        <li><a href="/posts/residue">留数定理の利用例（MathJaxのテスト用）</a></li>
+        <li><a href="/posts/cross-entropy">Cross entropyやsoftmaxに関するメモ</a></li>
+        <li><a href="/posts/elasticsearch-scala">ScalaでElasticsearchを使う(elastic4s)</a></li>
+        <li><a href="/posts/cabocha-scala">ScalaからCaboChaを使う</a></li>
+        <li><a href="/posts/type-ipa">How to type phonetic symbols</a></li>
+        <li><a href="/posts/hakyll-whitespace">Hakyllで日本語文中の余分な空白を削除する</a></li>
+        <li><a href="/posts/arabluatex">LaTeXでRTL（右横書き）の文書をつくる</a></li>
+        <li><a href="/posts/adam-lemma10-3">確率的最適化手法Adamの論文のLemma 10.3</a></li>
+        <li><a href="/posts/poster">LaTeX (Beamer)で学会発表用のポスターを作る</a></li>
+        <li><a href="/posts/vocabulary">Markdown → LaTeXで単語帳</a></li>
+        <li><a href="/posts/pseudocode">LaTeXで擬似コード</a></li>
+        <li><a href="/posts/inner-universe">攻殻機動隊S.A.C.のOPをロシア語で歌いたい</a></li>
+      </ul>
+      <h3>スライド</h3>
+      <section id="reading">
+        <h5>論文紹介</h5>
+        <ul>
+          <li><em><a href="https://github.com/pecorarista/documents/blob/master/SNLP/2016/metaphor-detection-with-topic-transition.pdf">Metaphor Detection with Topic Transition, Emotion and Cognition in Context</a></em></li>
+          <li><em><a href="https://github.com/pecorarista/documents/blob/master/Syntax/incremental-ccg.pdf">An Incremental Algorithm for Transition-based CCG Parsing</a></em></li>
+          <li><em><a href="https://github.com/pecorarista/documents/blob/master/SNLP/2015/semantic-vsm.pdf">Ontologically Grounded Multi-sense Representation Learning for Semantic Vector Space Models</a></em></li>
+        </ul>
+        <h5>勉強会資料</h5>
+        <ul>
+          <li>
+            <a href="https://github.com/pecorarista/documents/blob/master/TokyoCL/tokyocl.pdf">自然言語処理でメタファーをどう扱うか&mdash;いくつかのモデルとデータの紹介</a>
+          </li>
+          <li><a href="https://github.com/pecorarista/documents/blob/master/PRML/prml14.pdf">パターン認識と機械学習(PRML) 第14章 モデルの結合</a></li>
+          <li><a href="https://github.com/pecorarista/documents/blob/master/PRML/prml10.4-10.6.pdf">パターン認識と機械学習(PRML) 第10章 近似推論法（10.4&ndash;10.6のみ）</a></li>
+          <li><a href="https://github.com/pecorarista/documents/blob/master/PRML/prml04.pdf">パターン認識と機械学習(PRML)  第4章 線形識別モデル</a></li>
+        </ul>
+      </section>
+      <section>
+        <h3>卒業論文</h3>
+        <ul>
+          <li>
+            <a href="https://github.com/pecorarista/documents/blob/master/GraduationThesis/soturon.pdf">一般化された横断性条件の必要性について</a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</article>
+{% endblock %}

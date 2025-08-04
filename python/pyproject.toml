@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "pe"
+version = "0.1.0"
+description = ""
+authors = ["Miyazawa Akira <pecorarista@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+matplotlib = "^3.9.2"
+seaborn = "^0.13.2"
+numpy = "^2.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.27.0"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
+flake8-pyproject = "^1.2.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,76 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+
+{% set lang = 'en' %}
+{% set title = 'How to type phonetic symbols' %}
+{% set posted = '2016-09-18' %}
+{% set updated = '2025-06-22' %}
+
+{% block post %}
+<section id="introduction">
+<p>There are five main methods to type phonetic symbols. You may wonder which way is the best. It’s difficult to answer this question because each has its advantages and disadvantages. Actually, we don’t have to answer the question because you can use these methods in parallel.
+If you are interested in comparison of key sequences, see the table in <a href="#appendix">Appendix</a>.</p>
+</section>
+
+<section id="web-application">
+  <h2>1. Web application</h2>
+  <p>Some web sites provide interface to type IPA symbols graphically.</p>
+  <ul>
+     <li>
+       <a href="http://ipa.typeit.org/full/">Type IPA phonetic symbols</a>
+     </li>
+     <li>
+       <a href="https://r12a.github.io/pickers/ipa/">IPA character picker</a>
+     </li>
+  </ul>
+  <p>These may be the easiest way for people who are not familiar with computers.
+    One disadvantage is that you have to use a mouse or another pointing device.
+    It may decrease productivity.</p>
+  <h2>2. Compose Key</h2>
+  <p>Compose Key is a system for typing special characters. It is probably not enabled by default.
+    Please see pages that explain how to configure (e.g., <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/desktop_migration_and_administration_guide/enable-compose-key">ENABLING THE COMPOSE KEY</a>).
+    On Windows, its alternative <a href="https://github.com/samhocevar/wincompose">WinCompose</a> is available. You can add new key sequences by editing <code>Xcompose.txt</code>.</p>
+  <div class="figure-container">
+    <figure>
+      <figcaption>WinCompose Sequences</figcaption>
+      <img alt="Screenshot of WinCompose" src="/static/images/WinCompose-screenshot.png" style="max-width: 1000px;">
+    </figure>
+  </div>
+</section>
+
+<section id="vim">
+  <h2>3. Vim (diagraph)</h2>
+  <p>
+     Text editor Vim provides a method to type complex characters such as æ via a function called “digraph”. <code>:digraphs</code> shows the list of characters and their key sequence. You can enter the digraph mode by typing &lt;Ctrl-K&gt;. An advantage of the system is that you can keep editing text. Furthermore, it’s easy to customize the combinations. For example, to register a sequence for ɐ (decimal encoding: 592), just add one line <code>digraph a5 594</code> to <code>~/.vimrc</code>. Then,
+     <kbd>Ctrl-K</kbd>
+     <kbd>a</kbd> <kbd>5</kbd>
+     will insert the characters ɐ. However, since Vim is a text editor, you have to copy and paste the characters to use it on other applications.</p>
+</section>
+
+<section>
+   <h2>4. LaTeX (TIPA)</h2>
+   <p><a href="https://www.ctan.org/pkg/tipa?lang=en">TIPA </a>is a package for LaTeX to print IPA characters.
+      As long as you make a vocabulary list using LaTeX, it is one of the best tools for IPA.
+      Of course, since this is a LaTeX package, you cannot use it outside LaTeX environment.
+   </p>
+   <p>These days, some LaTeX processors such as LuaTeX and XeTeX supports Unicode well.
+      This means that when you type uncommon characters—such as IPA symbols—they are displayed as-is in the text editor.
+      Thus it is more intuitive and reusable than TIPA.
+      However, this also means that you have to input special characters, so this does not solve our first problem.
+      With digraphs, Compose Key, or X-SAMPA, these can be a good tool for creating a vocabulary list.
+      Modern TeX environments also enable you to change fonts easily.
+   </p>
+</section>
+<section>
+   <h2>5. <a href="http://www.phon.ucl.ac.uk/home/sampa/x-sampa.htm">X-SAMPA</a></h2>
+   <p>X-SAMPA is a way of representing phones using only ASCII characters.
+     Each of the characters has a corresponding character in the IPA system, and therefore it can be used as an input method for IPA.
+     One of its implementations is available in <a href="//fcitx-im.org/wiki/Fcitx">Fcitx</a>, and it is provided as a binary package named “fcitx-table-ipa-x-sampa” in Ubuntu.
+     One of its shortcomings is that you have to switch input methods to type even one IPA symbol.
+     Moreover, you may possibly find it difficult to memorize key sequences because they are sometimes not intuitive.</p>
+</section>
+<section id="appendix">
+  <h2>Appendix</h2>
+  <p>The table below shows how to type each symbol (Compose is the default key sequences of Wincompose). <strong>Note that all input methods can be customized according to your need</strong>.</p>
+  {% include 'nunjucks/posts/_include/_ipa-table.njk' %}
+</section>
+{% endblock %}

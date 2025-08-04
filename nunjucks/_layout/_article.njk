@@ -1,0 +1,15 @@
+{% extends 'nunjucks/_layout/_layout.njk' %}
+
+{% block content %}
+<article>
+  <h1>{{ title }}</h1>
+  <div class="info text-muted">
+    Posted: {{ posted }}
+    {% if updated %}
+      (Updated: {{ updated }})
+    {% endif %}
+  </div>
+  {% block post %}
+  {% endblock %}
+</article>
+{% endblock %}

@@ -1,0 +1,291 @@
+{% extends 'nunjucks/_layout/_article.njk' %}
+{% set lang = 'ja' %}
+{% set mathematical = 'true' %}
+{% set title = 'π-systemとλ-system' %}
+{% set posted = '2023-04-15' %}
+
+{% block post %}
+<section>
+<h3>1. \(\sigma\)-加法族</h3>
+<p>集合\(
+E
+\)の部分集合族\(
+  \mathcal{E}
+  \subset
+  2^E
+\)が<strong>\(\sigma\)-加法族</strong>(\(\sigma\)-algebra)であるとは，以下の<span class="mathitem">(s1)</span>&ndash;<span class="mathitem">(s3)</span>が成り立つことである．</p>
+<ol class="math">
+  <li class="s"><span class="head">\(E \in \mathcal{E} \)</span>．</li>
+  <li class="s"><span class="head">\(A \in \mathcal{E}\)</span>ならば\(E \setminus A \in \mathcal{E}\)．</li>
+  <li class="s">集合列\(
+    (A_n)_{n \in \mathbb{N}}
+  \)について，任意の\(
+    n \in \mathbb{N}
+  \)で\(
+    A_n \in \mathcal{E}
+  \)ならば\(
+    \displaystyle \bigcup_{n \in \mathbb{N}} A_n \in \mathcal{E}
+  \)．</li>
+</ol>
+</section>
+
+<section>
+<h3>2. \(\pi\)-system</h3>
+<p>集合\(
+  E
+\)の部分集合族\(
+  \mathcal{E} \subset 2^E
+\)が<strong>\(\pi\)-system</strong>（またはp-system）であるとは，\(
+  \mathcal{E}
+\)が積(product)について閉じていることをいう．すなわち以下の<span class="mathitem">(p1)</span>が成り立つことをいう．</p>
+<ol class="math">
+  <li class="p"><span class="head">\(
+      A_1 \in \mathcal{E}
+    \)</span>かつ\(
+      A_2 \in \mathcal{E}
+    \)ならば\(
+      A_1 \cap A_2 \subset \mathcal{E}
+    \)．
+  </li>
+</ol>
+</section>
+<section>
+<h3>3. \(\lambda\)-system</h3>
+<p>集合\(
+  E
+\)の部分集合族\(
+  \mathcal{E} \subset 2^E
+\)が<strong>\(\lambda\)-system</strong>（またはd-system）であるとは，以下の<span class="mathitem">(d1)</span>&ndash;<span class="mathitem">(d3)</span>が成り立つことである．</p>
+<ol class="math">
+  <li class="d"><span class="head">\(
+    E \in \mathcal{E}
+  \)</span>．
+  </li>
+  <li class="d"><span class="head">\(
+    A_1 \in \mathcal{E}
+  \)</span>かつ\(
+    A_2 \in \mathcal{E}
+  \)かつ\(
+    A_1 \subset A_2
+  \)ならば\(
+    A_2 \setminus A_1 \in \mathcal{E}
+  \)．
+  </li>
+  <li class="d">増加する集合列\(
+      (A_n)_{n \in \mathbb{N}}
+    \)について，任意の\(
+      n \in \mathbb{N}
+    \)で\(
+      A_n \in \mathcal{E}
+    \)ならば，\(
+      \displaystyle \bigcup_{n \in \mathbb{N}} A_n \in \mathcal{E}
+    \)．
+  </li>
+</ol>
+<p><span class="head">\((A_n)_{n \in \mathbb{N}}\)</span>が増加する集合列（以降，単に増加列と呼ぶ）であるとは，各\(
+  n
+\)で\(
+  A_n \subset A_{n + 1}
+\)が成り立つことである．\(
+  A := \bigcup_{n \in \mathbb{N}} A_n
+\)をその極限と呼ぶ．
+</p>
+<p>\(\lambda\)-systemの&lang;d&rang;は<a href="https://en.wikipedia.org/wiki/Eugene_Dynkin">Eugene Dynkin</a>にちなむ．
+</p>
+</section>
+<section>
+<h3>命題</h3>
+<p><span class="head">\(\mathcal{E}\)</span>が\(E\)の\(\sigma\)-加法族であることは，\(\mathcal{E}\)が\(E\)の\(\pi\)-systemかつ\(\lambda\)-systemであることと同値である．</p>
+<strong>証明</strong>
+<p><span class="head">\(\sigma\)</span>-加法族ならば\(\pi\)-systemであることを示す．\(
+  A_1 \in \mathcal{E}
+\)かつ\(
+  A_2 \in \mathcal{E}
+\)ならば<span class="mathitem">(s2)</span>により\(E \setminus A_1 \in \mathcal{E}\)かつ\(E \setminus A_2 \in \mathcal{E}\)が成り立つ．このとき<span class="mathitem">(s3)</span>より\(
+  (E \setminus A_1) \cup (E \setminus A_2) \in \mathcal{E}
+\)である．<span class="mathitem">(s3)</span>とDe Morganの法則により\(
+  A_1 \cap A_2 = E \setminus ((E \setminus A_1) \cup (E \setminus A_2) ) ) \in \mathcal{E}
+\)を得る．</p>
+<figure>
+証明木
+\(\Pi_1\)
+\begin{prooftree}
+  \AxiomC{$[\text{$\sigma$-algebra}]_1$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$(\text{s}3) \land (\text{s}2)$}
+  \AxiomC{$((\text{s}3) \land (\text{s}2)) \Rightarrow \text{\(\pi\)-system}$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$\text{\(\pi\)-system}$}
+\end{prooftree}
+</figure>
+<p>次に<span class="head">\(\sigma\)</span>-加法族ならば\(\lambda\)-systemであることを示す．<span class="mathitem">(d1)</span>と<span class="mathitem">(s1)</span>は同値である．</p>
+<figure>
+証明木
+\(\Pi_2\)
+\begin{prooftree}
+  \AxiomC{$[\text{$\sigma$-algebra}]_1$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$(\text{s}1)$}
+  \AxiomC{$(\text{s}1) \Rightarrow (\text{d}1)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{d}1)$}
+\end{prooftree}
+</figure>
+<p><span class="head">\(A_2 \setminus A_1 = A_2 \cap (E \setminus A_1)\)</span>
+なので，<span class="mathitem">(s1)</span> と\(\pi\)-systemであることから<span class="mathitem">(d2)</span>の成立が確認できる．</p>
+<figure>
+証明木
+\(\Pi_3\)
+\begin{prooftree}
+  \AxiomC{$[\text{$\sigma$-algebra}]_1$}
+  \UnaryInfC{$(\text{s}2)$}
+  \AxiomC{$\Pi_1$}
+	\noLine
+  \UnaryInfC{$\text{\(\pi\)-system}$}
+  \BinaryInfC{$(\text{s}2) \land \text{\(\pi\)-system}$}
+  \AxiomC{$(\text{s}) \land \text{\(\pi\)-system}) \Rightarrow (\text{d}2)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{d}2)$}
+\end{prooftree}
+</figure>
+<p><span class="mathitem">(s3)</span>から<span class="mathitem">(d3)</span>は明らかである．</p>
+<figure>
+証明木
+\(\Pi_4\)
+\begin{prooftree}
+  \AxiomC{$[\text{$\sigma$-algebra}]_1$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$(\text{s}3)$}
+  \AxiomC{$(\text{s}3) \Rightarrow (\text{d}3)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{d}3)$}
+\end{prooftree}
+</figure>
+<p>以上より\(\sigma\)-加法族ならば\(\pi\)-systemかつ\(\lambda\)-systemであることが示された．</p>
+<figure>
+証明木
+\(\Pi_5\)
+\begin{prooftree}
+  \AxiomC{$\Pi_1$}
+	\noLine
+  \UnaryInfC{$\text{\(\pi\)-system}$}
+  \AxiomC{$\Pi_1$}
+	\noLine
+  \UnaryInfC{$(\text{d}2)$}
+  \AxiomC{$\Pi_2$}
+	\noLine
+  \UnaryInfC{$(\text{d}3)$}
+  \AxiomC{$\Pi_3$}
+	\noLine
+  \UnaryInfC{$(\text{d}1)$}
+  \RightLabel{ $\small \text{$\land\,$I}$}
+	\TrinaryInfC{$\text{\(\lambda\)-system}$}
+	\BinaryInfC{$\text{\(\pi\)-system} \land \text{\(\lambda\)-system}$}
+  \RightLabel{ $\small \text{1, $\Rightarrow\,$I}$}
+  \UnaryInfC{$\text{$\sigma$-algebra} \Rightarrow (\text{\(\pi\)-system} \land \text{\(\lambda\)-system})$}
+\end{prooftree}
+</figure>
+<p>逆を示す．<span class="mathitem">(s1)</span>と<span class="mathitem">(d1)</span>は同値である．</p>
+<figure>
+証明木 \(\Pi_5\)
+\begin{prooftree}
+  \AxiomC{$[\text{\(\pi\)-system} \land \text{\(\lambda\)-system}]_2$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$(\text{d}1)$}
+  \AxiomC{$(\text{d}1) \Rightarrow (\text{s}1)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{s}1)$}
+\end{prooftree}
+</figure>
+<p>任意の
+\(A \in \mathcal{E}\)
+をとる．このとき<span class="mathitem">(d1)</span>より
+\(E \in \mathcal{E}\)
+であり，また明らかに
+\(A \subset E\)
+なので<span class="mathitem">(d2)</span>より
+\(E \setminus A \in \mathcal{E}\)．</p>
+<figure>
+証明木 \(\Pi_6\)
+\begin{prooftree}
+  \AxiomC{$[\text{\(\pi\)-system} \land \text{\(\lambda\)-system}]_2$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$(\text{d}1) \land (\text{d}2)$}
+  \AxiomC{$(\text{d}1) \land (\text{d}2) \Rightarrow (\text{s}2)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{s}2)$}
+\end{prooftree}
+</figure>
+<p>
+集合列\(
+  (A_n)_{n \in \mathbb{N}}
+\)が各\(
+  n
+\)で\(
+  A_n \in \mathcal{E}
+\)を満たしているとする．このとき増加列\(
+  (B_n)_{n \in \mathbb{N}}
+\)を\(
+  B_n = \bigcup_{i = 0}^n A_i
+\)で定義する．\(
+  A_0 \cup A_1 = E \setminus ( (E \setminus A_0) \cap ( E \setminus A_1 ))
+\)であり，<span class="mathitem">(d2)</span>より\(
+  E \setminus A_0 \in \mathcal{E}
+\)かつ\(
+  E \setminus A_1 \in \mathcal{E}
+\)．\(\pi\)-systemであることより\(
+  (E \setminus A_0) \cap (E \setminus A_1) \in \mathcal{E}
+\)．再度<span class="mathitem">(d2)</span>を用いることで\(
+  A_0 \cup A_1 \in \mathcal{E}
+\)となる．帰納的に任意の\(
+  n \in \mathbb{N}
+\)で\(
+  B_n \in \mathcal{E}
+\)であることが容易に確認できるので，<span class="mathitem">(d3)</span>より\(
+  \bigcup_{n \in \mathbb{N}} B_n \in \mathcal{E}
+\)である．\(
+  \bigcup_{n \in \mathbb{N}} B_n = \bigcup_{n \in \mathbb{N}} A_n
+\)であるから\(
+  \bigcup_{n \in \mathbb{N}} A_n \in \mathcal{E}
+\)．</p>
+<figure>
+証明木
+\(\Pi_7\)
+\begin{prooftree}
+  \AxiomC{$[\text{\(\pi\)-system} \land \text{\(\lambda\)-system}]_2$}
+  \RightLabel{ $\small \text{$\land\,$E}$}
+  \UnaryInfC{$\text{\(\pi\)-system} \land (\text{d}2) \land (\text{d}3)$}
+  \AxiomC{$(\text{\(\pi\)-system} \land (\text{d}2) \land (\text{d}3)) \Rightarrow (\text{s}3)$}
+  \RightLabel{ $\small \text{$\Rightarrow\,$E}$}
+  \BinaryInfC{$(\text{s}3)$}
+\end{prooftree}
+</figure>
+<p>したがって\(\pi\)-systemかつ\(\lambda\)-systemであるとき，\(\sigma\)-加法族であることが示された．</p>
+<figure>
+証明木
+\(\Pi_8\)
+\begin{prooftree}
+  \AxiomC{$\Pi_5$}
+	\noLine
+  \UnaryInfC{$(\text{s}1)$}
+  \AxiomC{$\Pi_6$}
+	\noLine
+  \UnaryInfC{$(\text{s}2)$}
+  \AxiomC{$\Pi_7$}
+	\noLine
+  \UnaryInfC{$(\text{s}3)$}
+  \RightLabel{ $\small \text{$\land\,$I}$}
+	\TrinaryInfC{$\text{$\sigma$-algebra}$}
+  \RightLabel{ $\small \text{2, $\Rightarrow\,$I}$}
+	\UnaryInfC{$(\text{\(\pi\)-system} \land \text{\(\lambda\)-system}) \Rightarrow \text{$\sigma$-algebra}$}
+\end{prooftree}
+</figure>
+<p>以上より命題が証明された．&#8718;</p>
+</section>
+<section id="materials">
+  <h2>参考文献</h2>
+  <ol class="citation">
+    <li><a href="https://link.springer.com/book/10.1007/978-0-387-87859-1">Erhan &Ccedil;&#x131;nlar (2011) <em>Probability and Stochastics</em>. Springer New York.</a></li>
+  </ol>
+</section>
+{% endblock %}
