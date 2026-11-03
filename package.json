@@ -4,7 +4,7 @@
     "@11ty/eleventy": "^2.0.0",
     "escape-html": "^1.0.3",
     "eslint": "^8.23.1",
-    "html-validate": "^9.7.1",
+    "html-validate": "^11.18.0",
     "sass": "^1.54.9",
     "shiki": "^3.7.0",
     "stylelint": "^14.11.0",
